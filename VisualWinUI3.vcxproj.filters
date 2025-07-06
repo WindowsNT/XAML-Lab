@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml" />
+    <Page Include="Settings.xaml" />
+    <Page Include="MainPage.xaml" />
+    <Page Include="BlankWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="MainWindow.idl" />
+    <Midl Include="Item.idl" />
+    <Midl Include="ItemSelector.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="linker.cpp" />
+    <ClCompile Include="func.cpp" />
+    <ClCompile Include="Controls\InfoBar.cpp" />
+    <ClCompile Include="Controls\ItemSelector.cpp" />
+    <ClCompile Include="Controls\Button.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ButtonBase.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\CalendarDatePicker.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\CalendarView.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\CheckBox.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ContentControl.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Control.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\DatePicker.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\FlipView.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\FrameworkElement.cpp">
+      <Filter>Specific\UIElement\FrameworkElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Grid.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\WebView2.cpp">
+      <Filter>Specific\UIElement\FrameworkElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ItemsControl.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ItemsControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ListViewBase.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector\ListViewBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\RatingControl.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\TextBlock.cpp">
+      <Filter>Specific\UIElement\FrameworkElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\StackPanel.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\UIElement.cpp">
+      <Filter>Specific\UIElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ToggleButton.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\TextBox.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Selector.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\GridView.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector\ListViewBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Panel.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\TimePicker.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\HyperlinkButton.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Image.cpp">
+      <Filter>Specific\UIElement\FrameworkElement</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\Slider.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\MediaPlayerElement.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ProgressBar.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ProgressRing.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\PersonPicture.cpp">
+      <Filter>Specific\UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="property.hpp" />
+    <ClInclude Include="ItemSelector.h" />
+    <ClInclude Include="templateproperties.h">
+      <Filter>Specific</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{940b1990-57e9-4fbb-a9a9-f7503ed66c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific">
+      <UniqueIdentifier>{764b2f40-8dae-4d40-a394-1ba890c1c9ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement">
+      <UniqueIdentifier>{2cf6ac0c-d91d-43e8-aa5e-40e5f26dda07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement">
+      <UniqueIdentifier>{180d0a0c-9471-4136-acae-561c9d82a451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Panel">
+      <UniqueIdentifier>{c6abbf3e-45df-4c34-84fd-0c4af81ed029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control">
+      <UniqueIdentifier>{f885674c-cf14-459f-948a-fb50846d452f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control\ContentControl">
+      <UniqueIdentifier>{ef1b263b-c1f2-4296-81f5-673bbd993ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control\ContentControl\ButtonBase">
+      <UniqueIdentifier>{10ad34a8-2949-42e2-8e8e-59a048711b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control\ItemsControl">
+      <UniqueIdentifier>{481373d8-ffa1-418b-a22d-12caac994b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector">
+      <UniqueIdentifier>{5df7b28d-1c12-430b-8de4-85e236ea895e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Specific\UIElement\FrameworkElement\Control\ItemsControl\Selector\ListViewBase">
+      <UniqueIdentifier>{4ef75dd4-b390-4879-a88c-c739bf29589d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+    <Text Include="AddNewControl.txt">
+      <Filter>Specific</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="inst.bat" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="main.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
+  </ItemGroup>
+</Project>
