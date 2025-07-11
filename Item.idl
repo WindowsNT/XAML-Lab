@@ -1,0 +1,28 @@
+namespace VisualWinUI3
+{
+	[default_interface]
+	runtimeclass Item : Microsoft.UI.Xaml.Data.INotifyPropertyChanged,Windows.Foundation.IStringable
+	{
+			Item();
+			Int64	PropertyX;
+			Int32 Type;
+			Boolean Boolean0;
+			Double Number0;
+			Double Number1;
+			Double Number2;
+			Double Change1;
+			Double Change2;
+			Int32 Int0;
+			String Value0;
+			String Name1;
+			String Name2;
+			Boolean Sel{ get; set; };
+			Windows.UI.Color Color0;
+			Microsoft.UI.Xaml.Media.Brush ColorX{ get; };
+			Windows.Foundation.Collections.IObservableVector<String> xitems;
+			Windows.Foundation.Collections.IObservableVector<Item> ComboItems { get; };
+
+			Windows.Foundation.Collections.IObservableVector<Item> TVChildren{ get; };
+
+	}
+}

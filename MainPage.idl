@@ -1,0 +1,41 @@
+import "Item.idl";
+import "FileSystemItem.idl";
+
+namespace VisualWinUI3
+{
+    [default_interface]
+    runtimeclass MainPage : Microsoft.UI.Xaml.Controls.Page, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        MainPage();
+        void AskSaveChanges();
+        Boolean Dirty;
+        Boolean ViewProperties;
+        Boolean ViewPanels;
+        Boolean ViewElements;
+        Boolean ViewCodeSample{ get; };
+        Boolean CanAddElement{ get; };
+        Boolean CanAddPanel{ get; };
+		Boolean SeeTreeView{ get; };
+        Boolean SeeSelectButton{ get; };
+        static String txt(Int32 sidx);
+        void Save();
+        void Refresh();
+        void Refresh2(String str);
+        String i1;
+        String i2;
+        String i3;
+		Int64 wnd;
+        Int64 FirstSelectedItemPtr();
+        Int64 ProjectPtr{ get; };
+        String CurrentFilter;
+		void ApplyTopProperties();
+		void SelectClick(Object p1, Object p2);
+        Windows.Foundation.Collections.IObservableVector<Item> PropertyItems{ get; };
+        Windows.Foundation.Collections.IObservableVector<Item> Elements{ get; };
+        Windows.Foundation.Collections.IObservableVector<Item> Panels{ get; };
+		Microsoft.UI.Xaml.Controls.DataTemplateSelector PropertyTypeSelector{ get; };
+        Microsoft.UI.Xaml.Controls.DataTemplateSelector dts{ get; };
+        Windows.Foundation.Collections.IObservableVector<FileSystemItem> RootItems{ get; };
+
+    }
+}

@@ -1,0 +1,18 @@
+namespace VisualWinUI3
+{
+	[bindable]
+	[default_interface]
+	runtimeclass FileSystemItem : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+	{
+		FileSystemItem(Int64 fpptr,Int64 parptr);
+
+		String Name;
+		String Group;
+		Int64 Ptr{ get; };
+		Int64 ParPtr { get; };
+		Boolean IsSelected;
+		Boolean IsFolder{ get; };
+		void RaisePropertyChanged(String pn);
+		Windows.Foundation.Collections.IObservableVector<FileSystemItem> Children { get; };
+	}
+}

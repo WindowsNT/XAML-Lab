@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="VisualWinUI3.MenuBuilder"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VisualWinUI3"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    NavigationCacheMode="Required"
+    Loaded="PageLoaded"
+    mc:Ignorable="d">
+
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20">
+        <Grid.Resources>
+            <DataTemplate x:Key="FileTemplate" x:DataType="local:FileSystemItem">
+                <TreeViewItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
+                    </StackPanel>
+                </TreeViewItem>
+            </DataTemplate>
+            <DataTemplate x:Key="FolderTemplate" x:DataType="local:FileSystemItem" >
+                <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
+                    </StackPanel>
+                </TreeViewItem>
+            </DataTemplate>
+           
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <ContentDialog x:Name="Input1" IsPrimaryButtonEnabled="true" PrimaryButtonText="{x:Bind txt(4),Mode=OneWay}" IsSecondaryButtonEnabled="True" SecondaryButtonText="{x:Bind txt(5),Mode=OneWay}" PrimaryButtonStyle="{StaticResource AccentButtonStyle}" PrimaryButtonClick="Input_OK">            <StackPanel Orientation="Vertical">                <TextBlock Text="{x:Bind i1,Mode=OneWay}" Margin="0,10,0,10"/>                <TextBox Text="{x:Bind i2,Mode=TwoWay}" Margin="0,10,0,10" />            </StackPanel>        </ContentDialog>
+        <TeachingTip x:Name="ttip"
+                     ActionButtonStyle="{StaticResource AccentButtonStyle}"
+                     CloseButtonStyle="{StaticResource AccentButtonStyle}"
+                     PreferredPlacement="Center"
+                     TailVisibility="Collapsed"
+                        Title="{x:Bind i1,Mode=OneWay}"
+                        Subtitle="{x:Bind i2,Mode=TwoWay}">
+            <TeachingTip.IconSource>
+                <SymbolIconSource Symbol="Comment" />
+            </TeachingTip.IconSource>
+        </TeachingTip>
+
+
+        <MenuBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuBarItem Title="{x:Bind txt(42);}">
+                <MenuFlyoutItem Text="{x:Bind txt(7)}" Click="OnNew" >
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE78B;"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                <MenuFlyoutSubItem Text="{x:Bind txt(44)}" x:Name="MenuLoadX">
+                    
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSubItem Text="{x:Bind txt(24)}" x:Name="MenuDeleteX">
+
+                </MenuFlyoutSubItem>
+                <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                <MenuFlyoutItem Text="{x:Bind txt(9)}" Click="OnSave" >
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE74E;"/>
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="S" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="{x:Bind txt(25);}" >
+                <MenuFlyoutItem Text="{x:Bind txt(26)}" Click="OnUndo" >
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Z" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem Text="{x:Bind txt(27)}" Click="OnRedo" >
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="Y" Modifiers="Control"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+            <MenuBarItem Title="{x:Bind txt(46);}" >
+                <MenuFlyoutItem Text="{x:Bind txt(47)}" Click="OnTemplate1" >
+                </MenuFlyoutItem>
+            </MenuBarItem>
+
+
+        </MenuBar>
+        <TextBlock Margin="10" Text="{x:Bind txt(53);}" Grid.Row="1" Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></TextBlock>
+        <TextBlock Margin="10" Text="{x:Bind txt(54);}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></TextBlock>
+        <TextBlock Margin="10" Text="{x:Bind txt(43);}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></TextBlock>
+        <DropDownButton Margin="10" x:Name="xDropDown" Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Content="{x:Bind txt(43);}">
+        </DropDownButton>
+        <TreeView x:Name="xTreeView" Grid.Row="3" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Loaded="TreeLoaded"
+                  ItemsSource="{x:Bind RootItems, Mode=OneWay}" ItemTemplateSelector="{x:Bind dts}" RightTapped="RightTree" Tapped="LeftTree">
+        </TreeView>
+        <Grid Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Visibility="{x:Bind TreeViewPropertiesVisibility,Mode=OneWay}" BorderBrush="Aqua" BorderThickness="1"> 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{x:Bind txt(49);}" Margin="5" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
+            <TextBox Margin="5" Grid.Column="1" Grid.Row="0"  Text="{x:Bind PropName,Mode=TwoWay}" VerticalAlignment="Center"/>
+            <CheckBox Content="{x:Bind txt(50);}" IsChecked="{x:Bind PropSep,Mode=TwoWay}" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBlock Text="{x:Bind txt(52);}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
+            <TextBox  Margin="5" Grid.Column="1" Grid.Row="2"  Text="{x:Bind PropGroup,Mode=TwoWay}" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+                <Button Content="{x:Bind txt(39);}" Margin="5" VerticalAlignment="Center" Click="ButtonAdd"/>
+                <Button Content="{x:Bind txt(40);}" Margin="5" VerticalAlignment="Center" Click="ButtonAddSep"/>
+                <Button Content="{x:Bind txt(41);}" Margin="5"  VerticalAlignment="Center" Click="ButtonDelete"/>
+            </StackPanel>
+
+        </Grid>
+
+    </Grid>
+
+    
+</Page>

@@ -1,0 +1,1 @@
+1. TreeView crashes on open/close big elements

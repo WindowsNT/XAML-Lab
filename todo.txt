@@ -1,0 +1,2 @@
+1. CommandBar + Secondary buttons -> Correct XAML
+2. Save as Page and load to NavView

@@ -1,0 +1,20 @@
+import "FileSystemItem.idl";
+namespace VisualWinUI3
+{
+    [default_interface]
+    runtimeclass MenuBuilder : Microsoft.UI.Xaml.Controls.Page, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        static String txt(Int32 sidx);
+        MenuBuilder();
+        String i1;
+        String i2;
+
+        String PropName;
+        Boolean PropSep;
+        String PropGroup;
+        Boolean TreeViewPropertiesVisibility;
+        Windows.Foundation.Collections.IObservableVector<FileSystemItem> RootItems{ get; };
+        Microsoft.UI.Xaml.Controls.DataTemplateSelector dts{ get; };
+
+    }
+}

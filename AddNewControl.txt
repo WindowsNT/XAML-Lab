@@ -1,0 +1,10 @@
+1. Create the cpp
+2. MainPage.xaml modify menu
+3. MainPage.xaml.h add member
+4. MainPage.xaml.cpp add menu handler
+5. Property.hpp add creator (e.g. std::shared_ptr<XITEM> CreateXItemToggleButton())
+6. Property.hpp update XLITEM::Unser
+7. Update the ListItems
+8. Edit the CPP 
+	
+	

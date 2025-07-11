@@ -1,0 +1,8 @@
+namespace VisualWinUI3
+{
+	[default_interface]
+	runtimeclass ItemSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
+	{
+			ItemSelector();
+	}
+}

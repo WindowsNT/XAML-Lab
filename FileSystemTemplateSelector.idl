@@ -1,0 +1,17 @@
+namespace VisualWinUI3
+{
+	[default_interface]
+	runtimeclass FileSystemTemplateSelector : Microsoft.UI.Xaml.Controls.DataTemplateSelector
+	{
+		FileSystemTemplateSelector();
+
+		// public properties (XAML usable)
+		Microsoft.UI.Xaml.DataTemplate FileTemplate;
+		Microsoft.UI.Xaml.DataTemplate FolderTemplate;
+		void LoadTemplates(IInspectable root);
+
+		// IDataTemplateSelectorOverrides
+		Microsoft.UI.Xaml.DataTemplate SelectTemplateCore(Object item, Microsoft.UI.Xaml.DependencyObject container);
+		Microsoft.UI.Xaml.DataTemplate SelectTemplateCore(Object item);
+	}
+}
