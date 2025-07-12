@@ -1183,6 +1183,7 @@ namespace winrt::VisualWinUI3::implementation
 				item.PropertyX((long long)double_type.get());
 				item.Type(PT_DOUBLE);
 				item.Name1(pro->n);
+				item.Tip(pro->tip);
 				item.Number0(double_type->value);
 				item.Number1(double_type->mmin);
 				item.Number2(double_type->mmax);
@@ -1199,6 +1200,7 @@ namespace winrt::VisualWinUI3::implementation
 				item.Int0((int)bool_type->SelectedIndex);
 				item.Boolean0(bool_type->SelectedIndex);
 				item.Name1(pro->n);
+				item.Tip(pro->tip);
 				children.Append(item);
 			}
 			auto list_type = std::dynamic_pointer_cast<LIST_PROPERTY>(pro);
@@ -1214,6 +1216,7 @@ namespace winrt::VisualWinUI3::implementation
 					its.Append(e.c_str());
 				}
 				item.Name1(pro->n);
+				item.Tip(pro->tip);
 				children.Append(item);
 			}
 			auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
@@ -1224,6 +1227,7 @@ namespace winrt::VisualWinUI3::implementation
 				item.Type(PT_STRING);
 				item.Value0(string_type->value);
 				item.Name1(pro->n);
+				item.Tip(pro->tip);
 				children.Append(item);
 			}
 			auto color_type = std::dynamic_pointer_cast<COLOR_PROPERTY>(pro);
@@ -1234,6 +1238,7 @@ namespace winrt::VisualWinUI3::implementation
 				item.Type(PT_COLOR);
 				item.Color0(color_type->value);
 				item.Name1(pro->n);
+				item.Tip(pro->tip);
 				children.Append(item);
 			}
 		}

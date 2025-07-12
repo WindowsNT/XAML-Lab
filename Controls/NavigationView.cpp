@@ -189,6 +189,7 @@ public:
 			std::shared_ptr<LIST_PROPERTY> op = std::make_shared<LIST_PROPERTY>();
 			op->g = L"NavigationView";
 			op->n = L"Page";
+			op->tip = s(73);
 			op->special_type = 7; // Page
 
 			std::vector<std::wstring> names;

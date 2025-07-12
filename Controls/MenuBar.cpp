@@ -75,6 +75,7 @@ public:
 			op->S = 1;
 			op->g = L"MenuBar";
 			op->n = L"Menu";
+			op->tip = s(74);
 			op->special_type = 5; // MenuBar Menu	a
 			
 

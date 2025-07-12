@@ -112,6 +112,25 @@ namespace winrt::VisualWinUI3::implementation
         {
             _n2 = n.c_str();
         }
+
+
+        std::wstring _tip;
+        bool TipVisible()
+        {
+			return !_tip.empty();
+        }
+        void Tip(winrt::hstring t)
+        {
+            if (_tip == t)
+				return;
+            _tip = t;
+            m_propertyChanged(*this, winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"Tip"));
+        }
+        winrt::hstring Tip()
+        {
+            return _tip.c_str();
+		}
+
         void Type(int t)
         {
             _type = t;

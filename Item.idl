@@ -16,6 +16,8 @@ namespace VisualWinUI3
 			String Value0;
 			String Name1;
 			String Name2;
+			String Tip;
+			Boolean TipVisible{ get; };
 			Boolean Sel{ get; set; };
 			Windows.UI.Color Color0;
 			Microsoft.UI.Xaml.Media.Brush ColorX{ get; };

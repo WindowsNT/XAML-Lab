@@ -200,7 +200,10 @@ public:
 				if (index_before > 0)
 				{
 					index_before++;
-					properties.insert(properties.begin() + index_before, it->second);
+					if ((properties.begin() + index_before) >= properties.end())
+						properties.push_back(it->second);
+					else
+						properties.insert(properties.begin() + index_before, it->second);
 				}
 				else
 					properties.push_back(it->second);

@@ -71,13 +71,17 @@ std::vector<std::shared_ptr<PROPERTY>> XITEM_Control::CreateProperties(XML3::XML
 	if (!e)
 		return p;
 
-	if (1)
+	auto bc = X.try_as<winrt::Microsoft::UI::Xaml::Controls::BreadcrumbBar>();
+
+
+	if (!bc)
 	{
 		auto p1 = CreatePropertiesForFont< winrt::Microsoft::UI::Xaml::Controls::Control>(e);
 		for (auto& pp : p1)
 			p.push_back(pp);
 	}
-	if (1)
+
+	if (!bc)
 	{
 		auto p1 = CreatePropertiesForBackground< winrt::Microsoft::UI::Xaml::Controls::Control>(e);
 		for (auto& pp : p1)
@@ -86,7 +90,7 @@ std::vector<std::shared_ptr<PROPERTY>> XITEM_Control::CreateProperties(XML3::XML
 			p.push_back(pp);
 		}
 	}
-	if (1)
+	if (!bc)
 	{
 		auto p1 = CreatePropertiesForForeground< winrt::Microsoft::UI::Xaml::Controls::Control>(e);
 		for (auto& pp : p1)

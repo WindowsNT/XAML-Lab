@@ -37,30 +37,31 @@
             <DataTemplate x:Key="DoubleTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
                     <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" />
-                    <NumberBox Minimum="{x:Bind Number1,Mode=OneWay}" Margin="15,5,5,5"  Maximum="{x:Bind Number2,Mode=OneWay}" Value="{x:Bind Number0,Mode=TwoWay}" SpinButtonPlacementMode="Compact" SmallChange="{x:Bind Change1,Mode=OneWay}" LargeChange="{x:Bind Change2,Mode=OneWay}"/>
+                    <NumberBox Minimum="{x:Bind Number1,Mode=OneWay}" Margin="15,5,5,5"  Maximum="{x:Bind Number2,Mode=OneWay}" Value="{x:Bind Number0,Mode=TwoWay}" SpinButtonPlacementMode="Compact" SmallChange="{x:Bind Change1,Mode=OneWay}" LargeChange="{x:Bind Change2,Mode=OneWay}" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="IntTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
                     <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" />
-                    <NumberBox Minimum="{x:Bind Number1,Mode=OneWay}" Margin="15,5,5,5"  Maximum="{x:Bind Number2,Mode=OneWay}" Value="{x:Bind Number0,Mode=TwoWay}" SpinButtonPlacementMode="Compact" SmallChange="{x:Bind Change1,Mode=OneWay}" LargeChange="{x:Bind Change2,Mode=OneWay}"/>
+                    <NumberBox Minimum="{x:Bind Number1,Mode=OneWay}" Margin="15,5,5,5"  Maximum="{x:Bind Number2,Mode=OneWay}" Value="{x:Bind Number0,Mode=TwoWay}" SpinButtonPlacementMode="Compact" SmallChange="{x:Bind Change1,Mode=OneWay}" LargeChange="{x:Bind Change2,Mode=OneWay}" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="ColorTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
                     <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" />
-                    <ColorPicker Margin="15,5,5,5"  Color="{x:Bind Color0,Mode=TwoWay}" IsAlphaEnabled="True" IsColorSpectrumVisible="True" ColorSpectrumShape="Ring"/>
+                    <ColorPicker Margin="15,5,5,5"  Color="{x:Bind Color0,Mode=TwoWay}" IsAlphaEnabled="True" IsColorSpectrumVisible="True" ColorSpectrumShape="Ring" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="BoolTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
-                    <CheckBox Content="{x:Bind Name1}" Margin="15,5,5,5" IsChecked="{x:Bind Boolean0,Mode=TwoWay}"/>
+                    <CheckBox Content="{x:Bind Name1}" Margin="15,5,5,5" IsChecked="{x:Bind Boolean0,Mode=TwoWay}" />
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="ListTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
-                    <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5"/>
-                    <ComboBox ItemsSource="{x:Bind ComboItems,Mode=OneWay}" SelectedIndex="{x:Bind Int0,Mode=TwoWay}" Margin="15,5,5,5">
+                    <InfoBar Message="{x:Bind Tip}" Margin="15,5,5,5" IsIconVisible="False" Visibility="{x:Bind TipVisible,Mode=OneWay}" IsOpen="{x:Bind TipVisible,Mode=OneWay}" Severity="Success" />
+                    <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" />
+                    <ComboBox ItemsSource="{x:Bind ComboItems,Mode=OneWay}" SelectedIndex="{x:Bind Int0,Mode=TwoWay}" Margin="15,5,5,5" >
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="local:Item">
                                 <TextBlock Text="{x:Bind Name1}" />

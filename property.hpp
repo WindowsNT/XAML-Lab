@@ -17,6 +17,7 @@ public:
 	std::wstring n;
 	int special_type = 0; // 1,2 Grid Row/Column, 3,4 Scale/Translate, 5 menubar menu, 6 dropdown menu, 7 NV page
 	std::wstring xmln;
+	std::wstring tip;
 	bool S = 0;
 	virtual void Ser(XML3::XMLElement& el) override
 	{
@@ -24,6 +25,7 @@ public:
 		el.vv("n").SetValue(n);
 		el.vv("x").SetValue(xmln);
 		el.vv("s").SetValueInt(special_type);
+		el.vv("tip").SetValue(tip);
 	}
 
 	virtual void Unser(XML3::XMLElement& el) override
@@ -32,6 +34,7 @@ public:
 		n = el.vv("n").GetWideValue();
 		xmln = el.vv("x").GetWideValue();
 		special_type = el.vv("s").GetValueInt(0);
+		tip = el.vv("tip").GetWideValue();
 	}
 
 };
