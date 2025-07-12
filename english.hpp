@@ -70,8 +70,8 @@ L"You can select any item here and below there are its properties. The last item
 L"Run (ContentDialog)",
 L"Build",
 L"View C++ code sample",
-L"You must first save a design as a Page to load it here."
-L"You must create a menu using the menu creator to load it here."
+L"You must first save a design\r\nas a Page to load it here.",
+L"You must create a menu using\r\nthe menu creator to load it here.",
 };
 
 #define MAX_LANG 74
