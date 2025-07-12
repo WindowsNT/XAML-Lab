@@ -49,6 +49,7 @@ public:
 			op->S = 1;
 			op->g = L"WebView2";
 			op->n = L"Source";
+			op->tip = s(75);
 			properties.push_back(op);
 
 		}

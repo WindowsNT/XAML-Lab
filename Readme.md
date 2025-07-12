@@ -1,4 +1,4 @@
-## Visual WinUI3
+## XAML Lab
 A tool to create a WinUI3 Visually. Supports export to XAML and preview of the UI.
 Supported elements don't include all their attributes - work is in progress.
 There is a collection of templates that can be used to start with.
