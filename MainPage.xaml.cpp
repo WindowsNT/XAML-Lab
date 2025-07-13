@@ -305,7 +305,7 @@ namespace winrt::VisualWinUI3::implementation
 		OPENFILENAME of = { 0 };
 		of.lStructSize = sizeof(of);
 		of.hwndOwner = (HWND)0;
-		of.lpstrFilter = L"*.vwui3\0*.vwui3\0\0";
+		of.lpstrFilter = L"*.xamllab\0*.xamllab\0\0";
 		std::vector<wchar_t> fnx(10000);
 		of.lpstrFile = fnx.data();
 		of.nMaxFile = 10000;
@@ -492,11 +492,11 @@ namespace winrt::VisualWinUI3::implementation
 		OPENFILENAME of = { 0 };
 		of.lStructSize = sizeof(of);
 		of.hwndOwner = (HWND)0;
-		of.lpstrFilter = L"*.vwui3\0*.vwui3\0\0";
+		of.lpstrFilter = L"*.xamllab\0*.xamllab\0\0";
 		std::vector<wchar_t> fnx(10000);
 		of.lpstrFile = fnx.data();
 		of.nMaxFile = 10000;
-		of.lpstrDefExt = L"vwui3";
+		of.lpstrDefExt = L"xamllab";
 		of.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT;
 		if (!GetSaveFileName(&of))
 			return;
