@@ -39,6 +39,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+
         <ContentDialog x:Name="Message1" IsPrimaryButtonEnabled="true" PrimaryButtonText="{x:Bind txt(4),Mode=OneWay}" IsSecondaryButtonEnabled="False" PrimaryButtonStyle="{StaticResource AccentButtonStyle}">            <StackPanel Orientation="Vertical">                <TextBlock Text="{x:Bind i1,Mode=OneWay}" Margin="0,10,0,10"/>            </StackPanel>        </ContentDialog>
         <ContentDialog x:Name="Message3" IsPrimaryButtonEnabled="true" PrimaryButtonText="{x:Bind txt(3),Mode=OneWay}" IsSecondaryButtonEnabled="True" SecondaryButtonText="{x:Bind txt(2),Mode=OneWay}" PrimaryButtonStyle="{StaticResource AccentButtonStyle}" CloseButtonText="{x:Bind txt(5),Mode=OneWay}" PrimaryButtonClick="Message3_1" SecondaryButtonClick="Message3_2" CloseButtonClick="Message3_3">            <StackPanel Orientation="Vertical">                <TextBlock Text="{x:Bind i1,Mode=OneWay}" Margin="0,10,0,10"/>            </StackPanel>        </ContentDialog>
         <ContentDialog x:Name="TestCD" IsPrimaryButtonEnabled="true" PrimaryButtonText="{x:Bind txt(4),Mode=OneWay}" IsSecondaryButtonEnabled="False" PrimaryButtonStyle="{StaticResource AccentButtonStyle}">        </ContentDialog>
