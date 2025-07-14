@@ -62,6 +62,8 @@ namespace winrt::VisualWinUI3::implementation
             return _PropertyX;
 		}
      
+
+
         bool _boolean0 = false;
         bool Boolean0()
         {

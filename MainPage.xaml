@@ -231,7 +231,8 @@
             <MenuBarItem Title="{x:Bind txt(46);}" >
                 <MenuFlyoutItem Text="Notepad" Click="OnTemplate2" />
                 <MenuFlyoutItem Text="Image Browser with NavigationView" Click="OnTemplate4" />
-                <MenuFlyoutItem Text="Download Dialog" Click="OnTemplate5" />   
+                <MenuFlyoutItem Text="Download Dialog" Click="OnTemplate5" />
+                <MenuFlyoutItem Text="Button with Bind and Callback" Click="OnTemplate6" />   
 <!--                <MenuFlyoutItem Text="Web Browser" Click="OnTemplate3" /> -->
                     <!--                <MenuFlyoutItem Text="Menu+ListView" Click="OnTemplate1" >
                 </MenuFlyoutItem>-->
@@ -367,6 +368,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <MenuBar Grid.Row="0" HorizontalAlignment="Stretch" x:Name="MenuRootSelect" Visibility="{x:Bind SeeSelectButton,Mode=OneWay}" />
@@ -379,10 +381,16 @@
            VerticalAlignment="Center"
            HorizontalAlignment="Stretch" />
 
-            <Button x:Name="xCodeSnip" Grid.Row="3" Content="{x:Bind txt(72);}" Visibility="{x:Bind ViewCodeSample,Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" HorizontalAlignment="Stretch" Click="ViewCodeSampleClick"/>
+            <Button x:Name="xCodeSnip" Grid.Row="3" Content="{x:Bind txt(72);}" Visibility="{x:Bind ViewCodeSample,Mode=OneWay}" Style="{ThemeResource AccentButtonStyle}" HorizontalAlignment="Stretch" Click="ViewCodeSampleClick" Margin="10"/>
 
-            <TextBox x:Name="xFilter" Grid.Row="4" PlaceholderText="{x:Bind txt(33);}" Text="{x:Bind CurrentFilter,Mode=TwoWay}"/>
-            <ListView x:Name="ListView" Grid.Row="5"   ItemsSource="{x:Bind PropertyItems,Mode=OneWay}" ItemTemplateSelector="{x:Bind PropertyTypeSelector}">
+            <RadioButtons x:Name="BackgroundRadioButtons" Grid.Row="4" SelectedIndex="0"  MaxColumns="2" SelectionChanged="RDBSC" Margin="10">
+                <x:String>Direct</x:String>
+                <x:String>x:Bind</x:String>
+            </RadioButtons>
+
+            
+            <TextBox x:Name="xFilter" Grid.Row="5" PlaceholderText="{x:Bind txt(33);}" Text="{x:Bind CurrentFilter,Mode=TwoWay}" Margin="10"/>
+            <ListView x:Name="ListView" Grid.Row="6"   ItemsSource="{x:Bind PropertyItems,Mode=OneWay}" ItemTemplateSelector="{x:Bind PropertyTypeSelector}" Margin="10">
             </ListView>
 
         </Grid>

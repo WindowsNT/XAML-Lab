@@ -177,21 +177,33 @@ namespace winrt::VisualWinUI3::implementation
 
                     }
 
+                    if (main_page.PropertyItemsMode() == 1)
+                    {
+                        if (props->bindv == _v0)
+                            return;
+						// No change
+                        props->bindv = _v0;
+                        continue;
+                    }
+
                     auto list_type = std::dynamic_pointer_cast<STRING_PROPERTY>(props);
                     if (list_type)
                     {
-                        if (list_type->value == _v0)
+                        auto& what = list_type->value;
+                        if (what == _v0)
                             return; // No change
-                        list_type->value = _v0;
+                        what = _v0;
 
                     }
                     break;
                 }
             }
 
-            SelectedItem->ApplyProperties();
-            main_page.ApplyTopProperties();
-
+            if (main_page.PropertyItemsMode() == 0)
+            {
+                SelectedItem->ApplyProperties();
+                main_page.ApplyTopProperties();
+            }
         }
 
     }

@@ -14,6 +14,7 @@ class PROPERTY : public SERIALIZABLE
 public:
 	std::wstring g;
 	std::wstring n;
+	std::wstring bindv;
 	int special_type = 0; // 1,2 Grid Row/Column, 3,4 Scale/Translate, 5 menubar menu, 6 dropdown menu, 7 NV page
 	std::wstring xmln;
 	std::wstring tip;
@@ -25,6 +26,7 @@ public:
 		el.vv("x").SetValue(xmln);
 		el.vv("s").SetValueInt(special_type);
 		el.vv("tip").SetValue(tip);
+		el.vv("bindv").SetValue(bindv);
 	}
 
 	virtual void Unser(XML3::XMLElement& el) override
@@ -34,6 +36,7 @@ public:
 		xmln = el.vv("x").GetWideValue();
 		special_type = el.vv("s").GetValueInt(0);
 		tip = el.vv("tip").GetWideValue();
+		bindv = el.vv("bindv").GetWideValue();
 	}
 
 };

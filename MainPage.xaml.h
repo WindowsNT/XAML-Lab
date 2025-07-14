@@ -63,7 +63,9 @@ namespace winrt::VisualWinUI3::implementation
         }
         void PageLoaded(IInspectable const&, IInspectable const&);
         void SelectClick(IInspectable, IInspectable);
-
+        void RDBSC(IInspectable, IInspectable);
+        void SwitchPropertyMode(int nm);
+               
 
         winrt::event_token PropertyChanged(winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& handler)
         {
@@ -252,6 +254,7 @@ namespace winrt::VisualWinUI3::implementation
         void OnTemplate3(IInspectable const&, IInspectable const&);
         void OnTemplate4(IInspectable const&, IInspectable const&);
         void OnTemplate5(IInspectable const&, IInspectable const&);
+        void OnTemplate6(IInspectable const&, IInspectable const&);
         
         void ListViewPick(IInspectable const&, IInspectable const&);
         void ListViewPick1(IInspectable const&, IInspectable const&);
@@ -272,6 +275,20 @@ namespace winrt::VisualWinUI3::implementation
         bool CanAddThis(bool ShowMsg = 1);
         bool GenericAddItemUnder(std::function<std::shared_ptr<XITEM>()> foocall);
         bool GenericAddPanel(std::function<std::shared_ptr<XITEM>()> foocall,bool TestOnly = 0);
+
+
+		long long _PropertyItemsMode = 0;
+        long long PropertyItemsMode()
+        {
+            return _PropertyItemsMode;
+        }
+        void PropertyItemsMode(long long v)
+        {
+            if (_PropertyItemsMode == v)
+                return; // No change
+            _PropertyItemsMode = v;
+            m_propertyChanged(*this, winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"PropertyItemsMode"));
+		}
 
 		bool _SeeTreeView = true;
         bool SeeTreeView()

@@ -209,3 +209,22 @@ const char* template_5 = R"(<?xml version="1.0" encoding="UTF-8" standalone="yes
 </Design>
 </e>
 )";
+
+const char* template_6 = R"(<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<e>
+	<Design>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="1*"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+			<Button Click="WeClick" b___Content="a_button_name" b___FontSize="getFontSize"/>
+		</Grid>
+</Design>
+</e>
+)";
+

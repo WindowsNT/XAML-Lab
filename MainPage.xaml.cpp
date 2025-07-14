@@ -87,6 +87,10 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		OnTemplate0(template_5);
 	}
+	void MainPage::OnTemplate6(IInspectable const&, IInspectable const&)
+	{
+		OnTemplate0(template_6);
+	}
 
 
 	int Message3Result = -1;
@@ -465,6 +469,7 @@ namespace winrt::VisualWinUI3::implementation
 			OnSaveAs(nullptr, nullptr);
 			return;
 		}
+		SwitchPropertyMode(0); // make sure we are in PropertyItemsMode 0
 		DeleteFile(project->file.c_str());
 		if (project->xfile)
 		{
@@ -1136,7 +1141,7 @@ namespace winrt::VisualWinUI3::implementation
 		// Put the properties of this item
 		std::wstring Current_Group;
 		bool CGV = 1;
-		for (size_t ip = 0 ; ip < SelectedItem->properties.size() ; ip++)
+		for (size_t ip = 0; ip < SelectedItem->properties.size(); ip++)
 		{
 			auto& pro = SelectedItem->properties[ip];
 
@@ -1177,83 +1182,104 @@ namespace winrt::VisualWinUI3::implementation
 					continue; // Skip this property
 			}
 
+			if (PropertyItemsMode() == 0 && !pro->bindv.empty())
+				continue; // This property is used in binding
 
-			auto double_type = std::dynamic_pointer_cast<DOUBLE_PROPERTY>(pro);
-			if (double_type)
-			{
-				VisualWinUI3::Item item;
-				item.PropertyX((long long)double_type.get());
-				item.Type(PT_DOUBLE);
-				item.Name1(pro->n);
-				item.Tip(pro->tip);
-				item.Number0(double_type->value);
-				item.Number1(double_type->mmin);
-				item.Number2(double_type->mmax);
-				item.Change1(double_type->smallchange);
-				item.Change2(double_type->largechange);
-				children.Append(item);
-			}
-			auto bool_type = std::dynamic_pointer_cast<BOOL_PROPERTY>(pro);
-			if (bool_type)
-			{
-				VisualWinUI3::Item item;
-				item.PropertyX((long long)bool_type.get());
-				item.Type(PT_BOOL);
-				item.Int0((int)bool_type->SelectedIndex);
-				item.Boolean0(bool_type->SelectedIndex);
-				item.Name1(pro->n);
-				item.Tip(pro->tip);
-				children.Append(item);
-			}
-			auto list_type = std::dynamic_pointer_cast<LIST_PROPERTY>(pro);
-			if (list_type)
-			{
-				VisualWinUI3::Item item;
-				item.PropertyX((long long)list_type.get());
-				item.Type(PT_LIST);
-				item.Int0((int)list_type->SelectedIndex);
-				auto its = item.xitems();
-				for(auto& e : list_type->Items)
-				{
-					its.Append(e.c_str());
-				}
-				item.Name1(pro->n);
-				item.Tip(pro->tip);
-				children.Append(item);
-			}
-			auto func_type = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(pro);
-			if (func_type)
-			{
-				VisualWinUI3::Item item;
-				item.PropertyX((long long)func_type.get());
-				item.Type(PT_FUNCTION);
-				item.Value0(func_type->value);
-				item.Name1(pro->n);
-				item.Tip(pro->tip);
-				children.Append(item);
-			}
 
-			auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
-			if (string_type)
+			if (PropertyItemsMode() == 1)
 			{
+				// Bindable
+				auto func_type = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(pro);
+				if (func_type)
+					continue;
+
 				VisualWinUI3::Item item;
-				item.PropertyX((long long)string_type.get());
+				item.PropertyX((long long)pro.get());
 				item.Type(PT_STRING);
-				item.Value0(string_type->value);
 				item.Name1(pro->n);
+				item.Value0(pro->bindv);
 				item.Tip(pro->tip);
 				children.Append(item);
 			}
-			auto color_type = std::dynamic_pointer_cast<COLOR_PROPERTY>(pro);
-			if (color_type)
+			else
 			{
-				VisualWinUI3::Item item;
-				item.PropertyX((long long)color_type.get());
-				item.Type(PT_COLOR);
-				item.Color0(color_type->value);
-				item.Name1(pro->n);
-				item.Tip(pro->tip);
-				children.Append(item);
+				auto double_type = std::dynamic_pointer_cast<DOUBLE_PROPERTY>(pro);
+				if (double_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)double_type.get());
+					item.Type(PT_DOUBLE);
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					item.Number0(double_type->value);
+					item.Number1(double_type->mmin);
+					item.Number2(double_type->mmax);
+					item.Change1(double_type->smallchange);
+					item.Change2(double_type->largechange);
+					children.Append(item);
+				}
+				auto bool_type = std::dynamic_pointer_cast<BOOL_PROPERTY>(pro);
+				if (bool_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)bool_type.get());
+					item.Type(PT_BOOL);
+					item.Int0((int)bool_type->SelectedIndex);
+					item.Boolean0(bool_type->SelectedIndex);
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					children.Append(item);
+				}
+				auto list_type = std::dynamic_pointer_cast<LIST_PROPERTY>(pro);
+				if (list_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)list_type.get());
+					item.Type(PT_LIST);
+					item.Int0((int)list_type->SelectedIndex);
+					auto its = item.xitems();
+					for (auto& e : list_type->Items)
+					{
+						its.Append(e.c_str());
+					}
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					children.Append(item);
+				}
+				auto func_type = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(pro);
+				if (func_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)func_type.get());
+					item.Type(PT_FUNCTION);
+					item.Value0(func_type->value);
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					children.Append(item);
+				}
+
+				auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
+				if (string_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)string_type.get());
+					item.Type(PT_STRING);
+					item.Value0(string_type->value);
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					children.Append(item);
+				}
+				auto color_type = std::dynamic_pointer_cast<COLOR_PROPERTY>(pro);
+				if (color_type)
+				{
+					VisualWinUI3::Item item;
+					item.PropertyX((long long)color_type.get());
+					item.Type(PT_COLOR);
+					item.Color0(color_type->value);
+					item.Name1(pro->n);
+					item.Tip(pro->tip);
+					children.Append(item);
+				}
 			}
 		}
 
@@ -1331,6 +1357,41 @@ namespace winrt::VisualWinUI3::implementation
 	}
 
 
+	void MainPage::SwitchPropertyMode(int nm)
+	{
+		if (PropertyItemsMode() == nm)
+			return; // Already in this mode	
+
+
+		std::vector<std::shared_ptr<XITEM>> allitems;
+		GetAllItems(project->root, allitems);
+
+		if (nm == 1)
+			PropertyItemsMode(1);
+		else
+			PropertyItemsMode(0);
+	}
+
+	void MainPage::RDBSC(IInspectable radiobutts, IInspectable)
+	{
+		auto rb = radiobutts.as<winrt::Microsoft::UI::Xaml::Controls::RadioButtons>();
+		auto selectedItem = rb.SelectedItem(); 
+		if (!selectedItem)
+			return;
+		auto str = winrt::unbox_value<winrt::hstring>(selectedItem);
+		if (str == L"x:Bind")
+		{
+			SwitchPropertyMode(1);
+			Refresh2(L"PropertyItems");
+		}
+		else
+		{
+			SwitchPropertyMode(0);
+			Refresh2(L"PropertyItems");
+		}
+	}
+
+
 	void MainPage::E_CODE(IInspectable const&, IInspectable const&)
 	{
 		if (!project)
@@ -1351,27 +1412,65 @@ namespace winrt::VisualWinUI3::implementation
 		CollectCallbackFunctionsRecursive(project->root, fprops);
 
 
+		std::wstring idl = LR"(
+namespace MyApp
+{
+	[default_interface]
+	runtimeclass MyWindow : Microsoft.UI.Xaml.Window
+	{
+		MyWindow();
+		...
+)";
+
+	
+
+		idl += L"***";
 		// Add also {x: Bind} found to the props
 		std::vector<std::shared_ptr<XITEM>> allitems;
 		GetAllItems(project->root, allitems);
-/*		for (auto& it : allitems)
+		for(auto& item : allitems)
 		{
-			for (auto& p : it->properties)
+			if (!item)
+				continue;
+			for (auto& prop : item->properties)
 			{
-				// String
-				auto op1 = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
-				if (op1)
+				if (!prop)
+					continue;
+				if (prop->bindv.length())
 				{
-					// Find {x:Bind and extract the bound value
-					auto vp = op1->value;
-					auto pos = vp.find(L"{x:Bind");
-					if (!pos)
-						continue;
+					// To the idl
+					if (1)
+					{
+						auto str = std::dynamic_pointer_cast<STRING_PROPERTY>(prop);
+						if (str)
+						{
+							idl += L"\t\tString ";
+							idl += str->bindv;
+							idl += L";\r\n";
+						}
+					}
+					if (1)
+					{
+						auto dbl = std::dynamic_pointer_cast<DOUBLE_PROPERTY>(prop);
+						if (dbl)
+						{
+							idl += L"\t\tDouble ";
+							idl += dbl->bindv;
+							idl += L";\r\n";
+						}
+					}
+					//* More stuff here
 				}
 			}
 		}
-		*/
+		idl += L"***";
+		idl += LR"(
+	}
+}
+)";
 
+
+		cv.t_idl(idl.c_str());
 		if (fprops.size())
 		{
 			// Create the .H file code
@@ -1409,6 +1508,65 @@ namespace winrt::MyApp::implementation
 				}
 				cod += L");\r\n";
 			}
+
+			// And the declaration of the properties
+			for (auto& item : allitems)
+			{
+				wchar_t x[1000] = {};
+				if (!item)
+					continue;
+				for (auto& prop : item->properties)
+				{
+					if (!prop)
+						continue;
+					if (prop->bindv.length())
+					{
+						// To the idl
+						if (1)
+						{
+							auto str = std::dynamic_pointer_cast<STRING_PROPERTY>(prop);
+							if (str)
+							{
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(std::wstring _%s = 0;)", prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(winrt::hstring %s() { return _%s.c_str();} )", prop->bindv.c_str(), prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(void %s(winrt::hstring _param) { _%s = _param;} )", prop->bindv.c_str(), prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+							}
+						}
+						if (1)
+						{
+							auto dbl = std::dynamic_pointer_cast<DOUBLE_PROPERTY>(prop);
+							if (dbl)
+							{
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(double _%s = 0;)",prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(double %s() { return _%s;} )", prop->bindv.c_str(), prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+								swprintf_s(x, 1000, LR"(void %s(double _param) { _%s = _param;} )", prop->bindv.c_str(), prop->bindv.c_str());
+								cod += L"\t";
+								cod += x;
+								cod += L"\r\n";
+							}
+						}
+						//* More stuff here
+					}
+				}
+			}
+
 			cod += L"***";
 
 			cod += LR"(

@@ -166,6 +166,12 @@ void LoadXMLPropertiesfor(XML3::XMLElement& ee, std::vector <std::shared_ptr<PRO
 		if (what.empty())
 			what = p->n;
 
+		// Find b___ any
+		auto wh2 = L"b___" + what;
+		auto opb = ee.FindVariableZ(XML3::XMLU(wh2.c_str()).bc(), false);
+		if (opb)
+			p->bindv = opb->GetWideValue();
+
 
 		if (1)
 		{
@@ -474,6 +480,27 @@ void XMLPropertiesFor(XML3::XMLElement& ee, XITEM* xit, std::vector <std::shared
 		}
 		if (what.empty())
 			what = p->n;
+
+
+		if (!p->bindv.empty())
+		{
+			if (ExportForXAML == 1)
+			{
+				auto& op = ee.AddVariable(XML3::XMLU(what.c_str()).bc());
+
+				// {x:Bind function, Mode=OneWay}
+				wchar_t xf[200] = {};
+				swprintf_s(xf, 200, L"{x:Bind %s, Mode=OneWay}", p->bindv.c_str());
+				op.SetWideValue(xf);
+			}
+			else
+			{
+				auto wh2 = L"b___" + what;
+				auto& op = ee.AddVariable(XML3::XMLU(wh2.c_str()).bc());
+				op.SetWideValue(p->bindv.c_str());
+			}
+			continue;
+		}
 
 		if (what == L"Content" && dynamic_cast<XITEM_ContentControl*>(xit) && xit->children.size() == 1)
 		{
