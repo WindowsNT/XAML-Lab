@@ -76,7 +76,7 @@ public:
 
 		rtb.Blocks().Append(PlainParagraph(LR"(To create the pages for the FlipView:)"));
 		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<FlipView ItemsSource="{x:Bind FlipItems,Mode=OneWay}" ... />)"));
+		rtb.Blocks().Append(PreParagraph(LR"(<FlipView ItemsSource="{x:Bind FlipItems,Mode=OneWay}" ... />)")[0]);
 		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
 		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<IInspectable> FlipItems()
 {
@@ -93,7 +93,7 @@ public:
 
 	return items;
 }
-)"));
+)")[0]);
 
 		return rtb;
 	}

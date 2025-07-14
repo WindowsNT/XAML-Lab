@@ -28,6 +28,12 @@
                     <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" />
                 </StackPanel>
             </DataTemplate>
+            <DataTemplate x:Key="FunctionTemplate" x:DataType="local:Item">
+                <StackPanel Orientation="Vertical" >
+                    <TextBlock Text="{x:Bind Name1}" Margin="15,5,5,5" Foreground="Red" />
+                    <TextBox  Text="{x:Bind Value0,Mode=TwoWay}" Margin="15,5,5,5" ToolTipService.ToolTip="{x:Bind Tip,Mode=OneWay}"/>
+                </StackPanel>
+            </DataTemplate>
             <DataTemplate x:Key="StringTemplate" x:DataType="local:Item">
                 <StackPanel Orientation="Vertical" >
                     <InfoBar Message="{x:Bind Tip}" Margin="15,5,5,5" IsIconVisible="False" Visibility="{x:Bind TipVisible,Mode=OneWay}" IsOpen="{x:Bind TipVisible,Mode=OneWay}" Severity="Success"  MaxWidth="200"/>

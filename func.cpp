@@ -263,6 +263,18 @@ void LoadXMLPropertiesfor(XML3::XMLElement& ee, std::vector <std::shared_ptr<PRO
 					opx->value = op->GetWideValue();
 			}
 		}
+
+		if (1)
+		{
+			auto opx = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(p);
+			if (opx)
+			{
+				auto op = ee.FindVariableZ(XML3::XMLU(what.c_str()).bc(), false);
+				if (op)
+					opx->value = op->GetWideValue();
+			}
+		}
+
 	}
 
 }
@@ -516,6 +528,17 @@ void XMLPropertiesFor(XML3::XMLElement& ee, XITEM* xit, std::vector <std::shared
 		{
 			auto opx = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
 			if (opx && opx->value != opx->def)
+			{
+				auto& op = ee.AddVariable(XML3::XMLU(what.c_str()).bc());
+				op.SetWideValue(opx->value.c_str());
+			}
+		}
+
+
+		if (1)
+		{
+			auto opx = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(p);
+			if (opx && opx->value.length())
 			{
 				auto& op = ee.AddVariable(XML3::XMLU(what.c_str()).bc());
 				op.SetWideValue(opx->value.c_str());

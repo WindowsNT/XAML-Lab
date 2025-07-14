@@ -357,6 +357,7 @@ namespace winrt::VisualWinUI3::implementation
         void I_ListView(IInspectable const&, IInspectable const&);
         void I_TreeView(IInspectable const&, IInspectable const&);
         void E_XAML(IInspectable const&, IInspectable const&);
+        void E_CODE(IInspectable const&, IInspectable const&);
         void E_RUN1(IInspectable const&, IInspectable const&);
         void E_RUN2(IInspectable const&, IInspectable const&);
         void E_RUN3(IInspectable const&, IInspectable const&);

@@ -168,6 +168,15 @@ namespace winrt::VisualWinUI3::implementation
             {
                 if ((long long)props.get() == _PropertyX)
                 {
+                    auto fu = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(props);
+                    if (fu)
+                    {
+                        if (fu->value == _v0)
+                            return; // No change
+                        fu->value = _v0;
+
+                    }
+
                     auto list_type = std::dynamic_pointer_cast<STRING_PROPERTY>(props);
                     if (list_type)
                     {

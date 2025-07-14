@@ -74,7 +74,7 @@ public:
 
 		rtb.Blocks().Append(PlainParagraph(LR"(To create the Pivot items:)"));
 		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<Pivot ItemsSource="{x:Bind PivotItems,Mode=OneWay}" ... />)"));
+		rtb.Blocks().Append(PreParagraph(LR"(<Pivot ItemsSource="{x:Bind PivotItems,Mode=OneWay}" ... />)")[0]);
 		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
 		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<PivotItem> PivotItems()
 {
@@ -91,7 +91,7 @@ public:
 
 	return items;
 }
-)"));
+)")[0]);
 
 		return rtb;
 	}

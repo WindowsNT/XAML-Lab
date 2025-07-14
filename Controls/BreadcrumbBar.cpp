@@ -23,7 +23,7 @@ public:
 
 		rtb.Blocks().Append(PlainParagraph(LR"(To populate the Breadcrumb with data, for example 2 TextBlocks and 1 Button:)"));
 		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<BreadcrumbBar ItemsSource="{x:Bind BreadcrumbBarItems,Mode=OneWay}" ... />)"));
+		rtb.Blocks().Append(PreParagraph(LR"(<BreadcrumbBar ItemsSource="{x:Bind BreadcrumbBarItems,Mode=OneWay}" ... />)")[0]);
 		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
 		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<FrameworkElement> BreadcrumbBarItems()
 {
@@ -43,7 +43,7 @@ public:
 
 	return items;
 }
-)"));
+)")[0]);
 
 		return rtb;
 	}

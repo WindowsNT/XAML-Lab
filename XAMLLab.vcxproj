@@ -130,6 +130,10 @@
       <DependentUpon>BlankWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="CodeView.xaml.h">
+      <DependentUpon>CodeView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FileSystemItem.h" />
     <ClInclude Include="FileSystemTemplateSelector.h" />
     <ClInclude Include="Item.h" />
@@ -161,6 +165,9 @@
     <Page Include="BlankWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="CodeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -175,6 +182,10 @@
   <ItemGroup>
     <ClCompile Include="BlankWindow.xaml.cpp">
       <DependentUpon>BlankWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="CodeView.xaml.cpp">
+      <DependentUpon>CodeView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClCompile>
     <ClCompile Include="Controls\AnimatedVisualPlayer.cpp" />
@@ -268,6 +279,10 @@
       <DependentUpon>BlankWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="CodeView.idl">
+      <DependentUpon>CodeView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
     <Midl Include="FileSystemItem.idl" />
     <Midl Include="FileSystemTemplateSelector.idl" />
     <Midl Include="Item.idl" />
@@ -291,9 +306,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="AddNewControl.txt" />
-    <Text Include="readme.txt">
-      <DeploymentContent>false</DeploymentContent>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
@@ -313,6 +325,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CodeView.xamllab" />
     <None Include="inst.bat" />
     <None Include="packages.config" />
     <None Include="Readme.md" />

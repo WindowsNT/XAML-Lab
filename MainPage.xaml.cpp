@@ -5,6 +5,7 @@
 #endif
 
 #include "BlankWindow.g.h"
+#include "CodeView.g.h"
 #include "templates.hpp"
 
 using namespace winrt;
@@ -18,6 +19,7 @@ bool IsCommandBar(std::shared_ptr<XITEM> xit);
 bool IsNavigationView(std::shared_ptr<XITEM> xit);
 
 bool RefreshFromGrid = 0;
+void GetAllItems(std::shared_ptr<XITEM> r, std::vector<std::shared_ptr<XITEM>>& items);
 void UnselectAll(std::shared_ptr<XITEM> r);
 bool SelectLoop(std::shared_ptr<XITEM> r, XITEM* xit);
 bool DeleteLoop(std::shared_ptr<XITEM> r, XITEM* xit);
@@ -1219,6 +1221,18 @@ namespace winrt::VisualWinUI3::implementation
 				item.Tip(pro->tip);
 				children.Append(item);
 			}
+			auto func_type = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(pro);
+			if (func_type)
+			{
+				VisualWinUI3::Item item;
+				item.PropertyX((long long)func_type.get());
+				item.Type(PT_FUNCTION);
+				item.Value0(func_type->value);
+				item.Name1(pro->n);
+				item.Tip(pro->tip);
+				children.Append(item);
+			}
+
 			auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
 			if (string_type)
 			{
@@ -1300,6 +1314,186 @@ namespace winrt::VisualWinUI3::implementation
 		MainPage::Build(bw, nullptr, project->root, nullptr, 1, nullptr,*this);
 
 		bw.Activate();
+	}
+
+	void CollectCallbackFunctionsRecursive(std::shared_ptr<XITEM> r, std::vector<FUNCTION_SIG>& fprops)
+	{
+		if (!r)
+			return;
+		for (auto& f : r->CallbackFunctions)
+		{
+			fprops.push_back(f);
+		}
+		for (auto& c : r->children)
+		{
+			CollectCallbackFunctionsRecursive(c, fprops);
+		}
+	}
+
+
+	void MainPage::E_CODE(IInspectable const&, IInspectable const&)
+	{
+		if (!project)
+			return;
+		if (!project->root)
+			return;
+		winrt::VisualWinUI3::CodeView cv;
+
+		// Get the XAML
+		ExportForXAML = 1;
+		auto el = project->root->SaveEl();
+		ExportForXAML = 0;
+		auto xaml = el.Serialize();
+
+		// Get callback functions
+		std::vector<FUNCTION_SIG> fprops;
+		int NextCallbackIfNotName = 1;
+		CollectCallbackFunctionsRecursive(project->root, fprops);
+
+
+		// Add also {x: Bind} found to the props
+		std::vector<std::shared_ptr<XITEM>> allitems;
+		GetAllItems(project->root, allitems);
+/*		for (auto& it : allitems)
+		{
+			for (auto& p : it->properties)
+			{
+				// String
+				auto op1 = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+				if (op1)
+				{
+					// Find {x:Bind and extract the bound value
+					auto vp = op1->value;
+					auto pos = vp.find(L"{x:Bind");
+					if (!pos)
+						continue;
+				}
+			}
+		}
+		*/
+
+		if (fprops.size())
+		{
+			// Create the .H file code
+			std::wstring cod = LR"(#pragma once
+
+#include "MyWindow.g.h"
+
+namespace winrt::MyApp::implementation
+{
+	struct MyWindow : MyWindowT<MyWindow>
+	{					
+		...
+
+	)";
+			cod += L"***";
+			for(size_t i = 0 ; i < fprops.size() ; i++)
+			{
+				auto& f = fprops[i];
+				auto name = f.name;
+				if (name.length() == 0)
+					name = L"Callback" + std::to_wstring(NextCallbackIfNotName++);
+
+				cod += L"\t";
+				cod += f.return_type;
+				cod += L" ";
+				cod += name;
+				cod += L"(";
+				for (size_t j = 0; j < f.types.size(); j++)
+				{
+					if (j > 0)
+						cod += L", ";
+					cod += f.types[j];
+					cod += L" ";
+					cod += L"param" + std::to_wstring(j + 1);
+				}
+				cod += L");\r\n";
+			}
+			cod += L"***";
+
+			cod += LR"(
+	};
+}
+
+namespace winrt::MyApp::factory_implementation
+{
+	struct MyWindow : MyWindowT<MyWindow, implementation::MyWindow>
+	{
+	};
+}
+)";
+			cv.t_h(cod.c_str());
+		}
+
+		NextCallbackIfNotName = 1;
+		if (fprops.size())
+		{
+			// Create the .CPP file code
+			std::wstring cod = LR"(#include "pch.h"
+#include "MyWindow.xaml.h"
+#if __has_include("MyWindow.g.cpp")
+#include "MyWindow.g.cpp"
+#endif
+
+using namespace winrt;
+using namespace Microsoft::UI::Xaml;
+using namespace Microsoft::UI::Xaml::Controls;
+
+namespace winrt::MyApp::implementation
+{
+
+)";
+			cod += L"***";
+			for (size_t i = 0; i < fprops.size(); i++)
+			{
+				auto& f = fprops[i];
+				auto name = f.name;
+				if (name.length() == 0)
+					name = L"Callback" + std::to_wstring(NextCallbackIfNotName++);
+
+				cod += L"\t";
+				cod += f.return_type;
+				cod += L" ";
+				cod += L"MyWindow::";
+				cod += name;
+				cod += L"(";
+				for (size_t j = 0; j < f.types.size(); j++)
+				{
+					if (j > 0)
+						cod += L", ";
+					cod += f.types[j];
+					cod += L" ";
+					cod += L"param" + std::to_wstring(j + 1);
+				}
+				cod += L")\r\n\t{";
+
+				// Split f.content to lines
+				auto lines = split(f.content.c_str(), '\n');
+				for(auto& line : lines)
+				{
+					
+					if (line.length() == 0)
+						continue;
+					while(line.length() && line[line.size() - 1] == '\r')
+						line.erase(line.size() - 1, 1); // Remove \r at the end
+
+					cod += L"\r\n\t\t";
+					cod += line;
+				}
+				cod += L"\r\n\t}\r\n";
+			}
+			cod += L"***";
+			cod += LR"(
+}
+)";
+			cv.t_cpp(cod.c_str());
+		}
+
+
+		// Show it in the BlankWindow
+		cv.t_xaml(XML3::XMLU(xaml.c_str()).wc());
+		cv.ExtendsContentIntoTitleBar(true);
+		cv.Activate();
 	}
 
 	void MainPage::E_XAML(IInspectable const&, IInspectable const&)
@@ -1786,6 +1980,17 @@ namespace winrt::VisualWinUI3::implementation
 
 
 extern std::map<HWND, winrt::Windows::Foundation::IInspectable> windows;
+
+void GetAllItems(std::shared_ptr<XITEM> r, std::vector<std::shared_ptr<XITEM>>& items)
+{
+	if (!r)
+		return;
+	items.push_back(r);
+	for (auto& c : r->children)
+	{
+		GetAllItems(c, items);
+	}
+}
 
 void UnselectAll(std::shared_ptr<XITEM> r)
 {

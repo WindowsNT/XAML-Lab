@@ -76,7 +76,7 @@ public:
 
 		rtb.Blocks().Append(PlainParagraph(LR"(To create the pages for the GridView:)"));
 		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<GridView ItemsSource="{x:Bind GridItems,Mode=OneWay}" ... />)"));
+		rtb.Blocks().Append(PreParagraph(LR"(<GridView ItemsSource="{x:Bind GridItems,Mode=OneWay}" ... />)")[0]);
 		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
 		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<IInspectable> GridItems()
 {
@@ -96,7 +96,7 @@ public:
 
 	return items;
 }
-)"));
+)")[0]);
 
 		return rtb;
 	}

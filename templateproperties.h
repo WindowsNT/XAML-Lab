@@ -224,6 +224,19 @@ std::vector<std::shared_ptr<PROPERTY>> CreatePropertiesForParentCanvas(T ee)
 	return p;
 }
 
+template <typename T>
+std::shared_ptr<PROPERTY> CreatePropertyForGenericCallback(T e, const wchar_t* func)
+{
+	std::shared_ptr<PROPERTY> p;
+	if (!e)
+		return p;
+	std::shared_ptr<FUNCTION_PROPERTY> op = std::make_shared<FUNCTION_PROPERTY>();
+	op->n = func;
+	wchar_t txt[100] = {};
+	swprintf_s(txt, 100, s(77), func);
+	op->tip = txt;
+	return op;
+}
 
 template <typename T>
 std::vector<std::shared_ptr<PROPERTY>> CreatePropertiesForText(T e, const wchar_t* defv)

@@ -8,7 +8,6 @@ public:
 	virtual void Unser(XML3::XMLElement& el) = 0;
 };
 
-
 class PROPERTY : public SERIALIZABLE
 {
 
@@ -50,6 +49,62 @@ enum PROPERTY_TYPE
 	PT_COLOR,
 	PT_GROUP,
 	PT_BOOL,
+	PT_FUNCTION,
+};
+
+struct FUNCTION_SIG : public SERIALIZABLE
+{
+	std::wstring name;
+	std::vector<std::wstring> types = { L"IInspectable",L"IInspectable" };
+	std::wstring return_type = L"void";
+	std::wstring content;
+
+	void Ser(XML3::XMLElement& el)
+	{
+		el.vv("function_name").SetValue(name);
+		el.vv("function_return_type").SetValue(return_type);
+		el.vv("function_content").SetValue(content);
+		for (const auto& type : types)
+		{
+			el.AddElement("function_type").vv("value").SetValue(type);
+		}
+	}
+	void Unser(XML3::XMLElement&  el)
+	{
+		name = el.vv("function_name").GetWideValue();
+		return_type = el.vv("function_return_type").GetWideValue();
+		if (return_type == L"")
+			return_type = L"void"; // Default return type
+		content = el.vv("function_content").GetWideValue();
+		types.clear();
+		for (const auto& typeEl : el.GetChildren())
+		{
+			if (typeEl->GetElementName() == "function_type")
+			{
+				types.push_back(typeEl->vv("value").GetWideValue());
+			}
+		}
+	}
+
+};
+
+class FUNCTION_PROPERTY : public PROPERTY
+{
+public:
+	FUNCTION_SIG f;
+	std::wstring value;
+	virtual void Ser(XML3::XMLElement& el) override
+	{
+		PROPERTY::Ser(el);
+		f.Ser(el);
+		el.vv("v").SetValue(value);
+	}
+	virtual void Unser(XML3::XMLElement& el) override
+	{
+		PROPERTY::Unser(el);
+		f.Unser(el);
+		value = el.vv("v").GetWideValue();
+	}
 };
 
 class STRING_PROPERTY : public PROPERTY
@@ -217,6 +272,8 @@ public:
 			std::shared_ptr<PROPERTY> item;
 			if (itemEl.GetElementName() == "STRING_PROPERTY")
 				item = std::make_shared<STRING_PROPERTY>();
+			if (itemEl.GetElementName() == "FUNCTION_PROPERTY")
+				item = std::make_shared<FUNCTION_PROPERTY>();
 			else if (itemEl.GetElementName() == "LIST_PROPERTY")
 				item = std::make_shared<LIST_PROPERTY>();
 			else if (itemEl.GetElementName() == "COLOR_PROPERTY")
@@ -257,6 +314,7 @@ class XITEM : public SERIALIZABLE
 {
 public:
 
+	std::vector<FUNCTION_SIG> CallbackFunctions;
 	winrt::Windows::Foundation::IInspectable X;
 	bool Selected = false;
 
@@ -276,7 +334,7 @@ public:
 	}
 	virtual void ApplyProperties()
 	{
-
+		CallbackFunctions.clear();
 	}
 
 	virtual std::optional<FrameworkElement> HasCodeDemos()
@@ -343,14 +401,6 @@ public:
 	{
 		XML3::XMLElement ee;
 		SaveRecursive(&ee);
-/*		ee.SetElementName(XML3::XMLU(ElementName.c_str()).bc());
-		XMLPropertiesFor(ee, this,properties);
-
-		for (auto& ch : children)
-		{
-			XML3::XMLElement& eee = ee.AddElement(XML3::XMLU(ch->ElementName.c_str()).bc());
-			XMLPropertiesFor(eee, ch.get(),ch->properties);
-		}*/
 		return ee;
 	}
 

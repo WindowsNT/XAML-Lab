@@ -73,7 +73,10 @@ L"View C++ code sample",
 L"You must first save a design as a Page to load it here.",
 L"You must create a menu using the menu creator to load it here.",
 L"Due to a bug in WebView2 it's not automatically resized.",
+L"Show code",
+L"Callable function for %s event",
+L"// Element is clicked",
 };
 
-#define MAX_LANG 75
+#define MAX_LANG 78
 

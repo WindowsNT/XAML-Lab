@@ -1,0 +1,14 @@
+import "Item.idl";
+
+namespace VisualWinUI3
+{
+    [default_interface]
+    runtimeclass CodeView : Microsoft.UI.Xaml.Window,Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+    {
+        CodeView();
+    String t_idl;
+    String t_xaml;
+    String t_h;
+    String t_cpp;
+    }
+}
