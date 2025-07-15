@@ -75,9 +75,10 @@ namespace winrt::VisualWinUI3::implementation
 			_isSelected = selected;
 		}
 
+
 		IObservableVector<VisualWinUI3::FileSystemItem> Children()
 		{
-			auto children{ single_threaded_observable_vector<VisualWinUI3::FileSystemItem>() };
+			auto children = single_threaded_observable_vector<VisualWinUI3::FileSystemItem>() ;
 			if (_ptr)
 			{
 				XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
