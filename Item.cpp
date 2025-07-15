@@ -159,6 +159,8 @@ namespace winrt::VisualWinUI3::implementation
             if (!main_page)
                 continue;
 
+            bool NeedTreeRefresh = 0;
+
             // Find the item
             XITEM* SelectedItem = (XITEM*)main_page.FirstSelectedItemPtr();
             if (!SelectedItem)
@@ -193,6 +195,11 @@ namespace winrt::VisualWinUI3::implementation
                         if (what == _v0)
                             return; // No change
                         what = _v0;
+                        if (list_type->n == L"Name")
+                        {
+                            // Refresh the tree
+                            NeedTreeRefresh = 1;
+                        }
 
                     }
                     break;
@@ -203,6 +210,10 @@ namespace winrt::VisualWinUI3::implementation
             {
                 SelectedItem->ApplyProperties();
                 main_page.ApplyTopProperties();
+                if (NeedTreeRefresh)
+                {
+                    main_page.Refresh();
+                }
             }
         }
 

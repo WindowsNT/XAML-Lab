@@ -22,7 +22,12 @@ namespace winrt::VisualWinUI3::implementation
 		{
 			XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
 			if (el == 0) return L"";
-			return el->vv("n").GetWideValue().c_str();
+			auto n1 = el->vv("n").GetWideValue();
+			auto n2 = el->vv("n2").GetWideValue();
+			if (n2.length() == 0)
+				return n1.c_str();
+			auto n = n1 + L" (" + n2 + L")";
+			return n.c_str();
 		}
 		void Name(winrt::hstring const& name)
 		{

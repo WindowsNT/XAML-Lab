@@ -625,6 +625,21 @@ namespace winrt::VisualWinUI3::implementation
 			return;
 
 		e->vv("n").SetValue(xit->ElementName);	
+		// Check framework element
+		auto f = dynamic_cast<XITEM_FrameworkElement*>(xit);
+		if (f)
+		{
+			auto& props = f->properties;
+			for (auto& p : props)
+			{
+				if (p->n == L"Name")
+				{
+					auto strp = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+					if (strp)
+						e->vv("n2").SetValue(strp->value);
+				}
+			}
+		}
 		e->vv("vv").SetValueULongLong((unsigned long long)xit);
 		for (size_t i = 0; i < xit->children.size(); i++)
 		{
