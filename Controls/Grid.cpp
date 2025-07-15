@@ -200,7 +200,7 @@ public:
 				if (index_before > 0)
 				{
 					index_before++;
-					if ((properties.begin() + index_before) >= properties.end())
+					if (index_before >= properties.size())
 						properties.push_back(it->second);
 					else
 						properties.insert(properties.begin() + index_before, it->second);
@@ -220,6 +220,8 @@ public:
 			if (ch.GridUnitType == GridUnitType::Star)
 			{
 				op->value = std::to_wstring((int)ch.Value) + L"*";
+				if (op->value == L"*" || op->value == L"0*")
+					op->value = L"1*"; // 1* is the default
 			}
 			else
 			{
@@ -240,7 +242,10 @@ public:
 				if (index_before > 0)
 				{
 					index_before++;
-					properties.insert(properties.begin() + index_before, it->second);
+					if (index_before >= properties.size())
+						properties.push_back(it->second);
+					else
+						properties.insert(properties.begin() + index_before, it->second);
 				}
 				else
 					properties.push_back(it->second);

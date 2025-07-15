@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<e>
+	<Design>
+		<Grid Name="GridMain">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="1*"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+			<Grid Name="GridTop">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<BreadcrumbBar b___ItemsSource="BreadcrumbBarItems" Grid.Column="1"/>
+			</Grid>
+			<Grid Grid.Row="2" Name="GridFiles">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="2*"/>
+				</Grid.ColumnDefinitions>
+				<TreeView CanDragItems="True" CanReorderItems="True" Name="TreeBrowser"/>
+				<ListView Grid.Column="1" Name="ListFiles"/>
+			</Grid>
+		</Grid>
+	</Design>
+	<Pages />
+</e>
