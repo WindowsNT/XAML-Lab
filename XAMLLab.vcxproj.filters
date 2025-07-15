@@ -292,6 +292,9 @@
     <Page Include="Settings.xaml">
       <Filter>Windows</Filter>
     </Page>
+    <Page Include="FileDialog.xaml">
+      <Filter>Windows</Filter>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UIElement">

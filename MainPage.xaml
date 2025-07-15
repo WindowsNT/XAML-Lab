@@ -253,6 +253,11 @@
                         <KeyboardAccelerator Key="F8" />
                     </MenuFlyoutItem.KeyboardAccelerators>
                 </MenuFlyoutItem>
+                <MenuFlyoutItem Text="{x:Bind txt(81);}" Click="E_FILE" >
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="F9" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
             </MenuBarItem>
 
 
@@ -366,7 +371,7 @@
 -->
             
             
-            <TreeView x:Name="xTreeV" ItemsSource="{x:Bind RootItems, Mode=OneWay}"  Grid.Row="1" Tapped="LeftTree" Visibility="{x:Bind SeeTreeView,Mode=OneWay}" >
+            <TreeView x:Name="xTreeV" ItemsSource="{x:Bind RootItems, Mode=OneWay}"  Grid.Row="1" Tapped="LeftTree" Visibility="{x:Bind SeeTreeView,Mode=OneWay}" MaxHeight="400" >
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FileSystemItem">
                             <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">

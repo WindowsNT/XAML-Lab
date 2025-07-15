@@ -136,7 +136,7 @@ public:
 		{
 			std::vector<wchar_t> txt(100000);
 			if (Type == 0) // IDL
-				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<winrt::MyApp::MyItem> %s;", p->bindv.c_str());
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<MyApp.MyItem> %s{ get; };", p->bindv.c_str());
 			if (Type == 1) // H
 				swprintf_s(txt.data(), 100000, L"IObservableVector<winrt::MyApp::MyItem> %s();", p->bindv.c_str());
 			if (Type == 2) // CPP

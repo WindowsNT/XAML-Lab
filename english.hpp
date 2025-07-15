@@ -78,7 +78,8 @@ L"Callable function for %s event",
 L"// Element is clicked",
 L"This is a binding property",
 L"Copy",
+L"Test file dialog",
 };
 
-#define MAX_LANG 80
+#define MAX_LANG 81
 

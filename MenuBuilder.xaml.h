@@ -27,6 +27,12 @@ namespace winrt::VisualWinUI3::implementation
         {
             return _PropSep;
 		}
+        std::wstring _PropClicked;
+        winrt::hstring PropClicked()
+        {
+            return _PropClicked.c_str();
+        }
+
         void TreeViewPropertiesVisibility(bool b)
         {
             if (_TreeViewPropertiesVisibility == b)
@@ -407,6 +413,23 @@ R"(<root>
 
         winrt::Microsoft::UI::Xaml::Controls::TreeViewItem SelectedTreeItem = nullptr;
 
+        void PropClicked(winrt::hstring s)
+        {
+            if (_PropClicked == s)
+                return;
+            _PropClicked = s.c_str();
+            if (SelectedTreeItem)
+            {
+                auto fsit = SelectedTreeItem.DataContext().as<winrt::VisualWinUI3::FileSystemItem>();
+                if (!fsit)
+                    return;
+                fsit.Clicked(_PropClicked.c_str());
+                ReloadMenu();
+            }
+            else
+                m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"PropClicked" });
+        }
+
         void PropGroup(winrt::hstring s)
         {
             if (_PropGroup == s)
@@ -549,6 +572,7 @@ R"(<root>
             PropName(el->vv("n").GetWideValue().c_str());
             PropSep(el->vv("sep").GetValue() == "1");
             PropGroup(el->vv("g").GetWideValue().c_str());
+            PropClicked(el->vv("clicked").GetWideValue().c_str());
             SelectedTreeItem = treeItem;
             TreeViewPropertiesVisibility(true);
         }

@@ -86,7 +86,6 @@ public:
 			swprintf_s(txt, L"Item %d", i + 1);
 			TextBlock tb1;
 			tb1.Text(txt);
-			tb1.FontSize(24);
 			tb1.HorizontalAlignment(HorizontalAlignment::Center);
 			tb1.VerticalAlignment(VerticalAlignment::Center);
 			pages.Append(tb1);
@@ -108,7 +107,7 @@ public:
 		{
 			std::vector<wchar_t> txt(100000);
 			if (Type == 0) // IDL
-				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> %s;", p->bindv.c_str());
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> %s{ get; };", p->bindv.c_str());
 			if (Type == 1) // H
 				swprintf_s(txt.data(), 100000, L"IObservableVector<FrameworkElement> %s();", p->bindv.c_str());
 			if (Type == 2) // CPP
@@ -123,7 +122,6 @@ public:
 			swprintf_s(txt, L"Item %%d", i + 1);
 			TextBlock tb1;
 			tb1.Text(txt);
-			tb1.FontSize(24);
 			tb1.HorizontalAlignment(HorizontalAlignment::Center);
 			tb1.VerticalAlignment(VerticalAlignment::Center);
 			items.Append(tb1);

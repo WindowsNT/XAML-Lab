@@ -5,6 +5,7 @@
 #endif
 
 #include "BlankWindow.g.h"
+#include "FileDialog.g.h"
 #include "CodeView.g.h"
 #include "templates.hpp"
 
@@ -12,6 +13,7 @@ using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Controls;
 extern std::map<HWND, winrt::Windows::Foundation::IInspectable> windows;
+void LoadMenuNames(std::vector<std::wstring>& names, XML3::XMLElement& mr);
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -1319,6 +1321,14 @@ namespace winrt::VisualWinUI3::implementation
 		return children;
 	}
 
+	void MainPage::E_FILE(IInspectable const&, IInspectable const&)
+	{
+		winrt::VisualWinUI3::FileDialog j;
+		j.ExtendsContentIntoTitleBar(true);
+		j.Activate();
+
+	}
+
 	void MainPage::E_RUN3(IInspectable const&, IInspectable const&)
 	{
 		if (!project)
@@ -1379,10 +1389,48 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		if (!r)
 			return;
+		std::vector<std::wstring> names;
+		XML3::XMLElement menuEl;
+		LoadMenuNames(names, menuEl);
 		for (auto& f : r->CallbackFunctions)
 		{
 			fprops.push_back(f);
+
 		}
+
+		// If MenuBar or DropDownButton, add the Click functions where they exist
+		for (auto& p : r->properties)
+		{
+			auto str = std::dynamic_pointer_cast<LIST_PROPERTY>(p);
+			if (str && p->n == L"Menu")
+			{
+				// Find the element
+				for (size_t i = 0; i < names.size(); i++)
+				{
+					if ((i + 1) == str->SelectedIndex)
+					{
+						// Found it$
+						auto m2 = menuEl.GetChildren()[i];
+
+						std::vector<std::shared_ptr<XML3::XMLElement>> children;
+						m2->GetAllChildren(children);
+						for (auto& ch : children)
+						{
+							if (auto cl = ch->FindVariableZ("clicked"))
+							{
+								FUNCTION_SIG fs;
+								fs.name = cl->GetWideValue();
+								fs.return_type = L"void";
+								fprops.push_back(fs);
+
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+
 		for (auto& c : r->children)
 		{
 			CollectCallbackFunctionsRecursive(c, fprops);
@@ -2437,6 +2485,16 @@ void MenuBarToXML(winrt::Microsoft::UI::Xaml::Controls::MenuBar& mb, winrt::Wind
 				continue;
 			auto& el = curr->AddElement("MenuBarItem");
 			el.vv("Title").SetWideValue(item2.Title().c_str());
+			try
+			{
+				std::wstring unb = winrt::unbox_value_or<winrt::hstring>(item2.Tag(),L"").c_str();
+				if (unb.length() > 0)
+					el.vv("Click").SetWideValue(unb.c_str());
+			}
+			catch (...)
+			{
+
+			}
 			if (item2.Items().Size() > 0)
 			{	
 				MenuBarToXML(mb, nullptr, item2.Items(), root, &el);
@@ -2464,6 +2522,16 @@ void MenuBarToXML(winrt::Microsoft::UI::Xaml::Controls::MenuBar& mb, winrt::Wind
 			{
 				auto& el = curr->AddElement("MenuFlyoutItem");
 				el.vv("Text").SetWideValue(mfi.Text().c_str());
+				try
+				{
+					std::wstring unb = winrt::unbox_value_or<winrt::hstring>(item2.Tag(), L"").c_str();
+					if (unb.length() > 0)
+						el.vv("Click").SetWideValue(unb.c_str());
+				}
+				catch (...)
+				{
+
+				}
 			}
 			else
 			if (auto mfi2 = item2.try_as<winrt::Microsoft::UI::Xaml::Controls::MenuFlyoutSeparator>())
@@ -2493,6 +2561,16 @@ void DropDownButtonToXML(winrt::Microsoft::UI::Xaml::Controls::DropDownButton& m
 			{
 				auto& el = curr->AddElement("MenuFlyoutSubItem");
 				el.vv("Text").SetWideValue(mfs.Text().c_str());
+				try
+				{
+					std::wstring unb = winrt::unbox_value_or<winrt::hstring>(item2.Tag(), L"").c_str();
+					if (unb.length() > 0)
+						el.vv("Click").SetWideValue(unb.c_str());
+				}
+				catch (...)
+				{
+
+				}
 				if (mfs.Items().Size() > 0)
 				{
 					DropDownButtonToXML(mb, mfs.Items(), root, &el);
@@ -2503,6 +2581,16 @@ void DropDownButtonToXML(winrt::Microsoft::UI::Xaml::Controls::DropDownButton& m
 			{
 				auto& el = curr->AddElement("MenuFlyoutItem");
 				el.vv("Text").SetWideValue(mfi.Text().c_str());
+				try
+				{
+					std::wstring unb = winrt::unbox_value_or<winrt::hstring>(item2.Tag(), L"").c_str();
+					if (unb.length() > 0)
+						el.vv("Click").SetWideValue(unb.c_str());
+				}
+				catch (...)
+				{
+
+				}
 			}
 			else
 			if (auto mfi2 = item2.try_as<winrt::Microsoft::UI::Xaml::Controls::MenuFlyoutSeparator>())

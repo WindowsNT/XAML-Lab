@@ -40,6 +40,13 @@ namespace winrt::VisualWinUI3::implementation
 			el->vv("n").SetWideValue(name.c_str());
 		}
 
+		winrt::hstring Clicked() const
+		{
+			XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
+			if (el == 0) return L"";
+			return el->vv("clicked").GetWideValue().c_str();
+		}
+
 		winrt::hstring Group() const
 		{
 			XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
@@ -53,6 +60,14 @@ namespace winrt::VisualWinUI3::implementation
 			if (el->vv("g").GetWideValue() == group)
 				return;
 			el->vv("g").SetWideValue(group.c_str());
+		}
+		void Clicked(winrt::hstring const& group)
+		{
+			XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
+			if (el == 0) return;
+			if (el->vv("clicked").GetWideValue() == group)
+				return;
+			el->vv("clicked").SetWideValue(group.c_str());
 		}
 
 		bool IsFolder() const

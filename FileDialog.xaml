@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="VisualWinUI3.FileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VisualWinUI3"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="FileDialog">
+
+    <Grid Name="GridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="10,10,10,10" Name="GridTop">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <BreadcrumbBar ItemsSource="{x:Bind BreadcrumbBarItems, Mode=OneWay}" Grid.Column="1">
+                <BreadcrumbBar.ItemTemplate>
+                    <DataTemplate x:DataType="local:Item">
+                        <TextBlock Text="{x:Bind Name1}" />
+                    </DataTemplate>
+                </BreadcrumbBar.ItemTemplate>
+            </BreadcrumbBar>
+        </Grid>
+        <Grid Grid.Row="1" Margin="10,10,10,10" Name="GridTools">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Click="ButtonUp" Content="UP" Margin="5,5,5,5"/>
+            <Button Grid.Column="1" Click="ButtonNewFolder" Content="NEW FOLDER" Margin="5,5,5,5"/>
+            <DropDownButton Grid.Column="2" Content="TOOLS">
+                <DropDownButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutSubItem Text="View" >
+                            <MenuFlyoutItem Text="Grid" Click="buttonViewGrid"/>
+                            <MenuFlyoutItem Text="List" Click="buttonViewList"/>
+                        </MenuFlyoutSubItem>
+                    </MenuFlyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+        </Grid>
+        <Grid Grid.Row="2" Margin="10,10,10,10" Name="GridFiles">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView ItemsSource="{x:Bind TreeItems, Mode=OneWay}" Margin="10,10,10,10" Name="TreeBrowser">
+                <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="local:FileSystemItem">
+                        <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Bind Name,Mode=OneWay}"/>
+                            </StackPanel>
+                        </TreeViewItem>
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <ListView ItemsSource="{x:Bind FileItemsX, Mode=OneWay}" Grid.Column="1" Name="ListFiles" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Item">
+                        <TextBlock Text="{x:Bind Name1}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="3" Margin="10,10,10,10" Name="GridInput">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="TextBox" Margin="5,5,5,5"/>
+            <ComboBox Grid.Column="1" Margin="5,5,5,5" MinWidth="200"/>
+        </Grid>
+        <Grid Grid.Row="4" Margin="10,10,10,10" Name="GridButtons">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Click="ButtonOK" Content="Open" Margin="10,10,10,10" Name="buttonOpen"/>
+                <Button Click="ButtonCancel" Content="Cancel" Margin="10,10,10,10" Name="buttonCancel"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</Window>

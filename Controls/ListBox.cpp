@@ -99,7 +99,6 @@ public:
 			swprintf_s(txt, L"Item %d", i + 1);
 			TextBlock tb1;
 			tb1.Text(txt);
-			tb1.FontSize(24);
 			tb1.HorizontalAlignment(HorizontalAlignment::Center);
 			tb1.VerticalAlignment(VerticalAlignment::Center);
 			pages.Append(tb1);

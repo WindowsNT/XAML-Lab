@@ -113,13 +113,16 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Text="{x:Bind txt(49);}" Margin="5" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"></TextBlock>
             <TextBox Margin="5" Grid.Column="1" Grid.Row="0"  Text="{x:Bind PropName,Mode=TwoWay}" VerticalAlignment="Center"/>
             <CheckBox Content="{x:Bind txt(50);}" IsChecked="{x:Bind PropSep,Mode=TwoWay}" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
             <TextBlock Text="{x:Bind txt(52);}" Margin="5" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"></TextBlock>
-            <TextBox  Margin="5" Grid.Column="1" Grid.Row="2"  Text="{x:Bind PropGroup,Mode=TwoWay}" VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center">
+            <TextBox   Margin="5" Grid.Column="1" Grid.Row="2"  Text="{x:Bind PropGroup,Mode=TwoWay}" VerticalAlignment="Center"/>
+            <TextBlock Text="Clicked" Margin="5" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"></TextBlock>
+            <TextBox   Margin="5" Grid.Column="1" Grid.Row="3"  Text="{x:Bind PropClicked,Mode=TwoWay}" VerticalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center">
                 <Button Content="{x:Bind txt(39);}" Margin="5" VerticalAlignment="Center" Click="ButtonAdd"/>
                 <Button Content="{x:Bind txt(40);}" Margin="5" VerticalAlignment="Center" Click="ButtonAddSep"/>
                 <Button Content="{x:Bind txt(41);}" Margin="5"  VerticalAlignment="Center" Click="ButtonDelete"/>

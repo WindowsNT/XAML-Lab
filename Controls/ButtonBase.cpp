@@ -19,6 +19,7 @@ void XITEM_ButtonBase::ApplyProperties()
 				if (op->value.empty())
 					continue;
 
+				op->f.name = op->value;
 				CallbackFunctions.push_back(op->f);
 			}
 		}

@@ -641,6 +641,7 @@ void ReloadMenu2(XML3::XMLElement* root0,XML3::XMLElement* root1, winrt::Windows
 	auto n = root1->vv("n").GetWideValue();
 	int sep = 0;
 	auto g = root1->vv("g").GetWideValue();
+	auto clicked = root1->vv("clicked").GetWideValue();
 	if (root1->FindVariableZ("sep"))
 		sep = root1->vv("sep").GetValueInt();
 	if (root1->GetChildrenNum() == 0)
@@ -648,6 +649,7 @@ void ReloadMenu2(XML3::XMLElement* root0,XML3::XMLElement* root1, winrt::Windows
 		if (sep == 1)
 		{
 			winrt::Microsoft::UI::Xaml::Controls::MenuFlyoutSeparator item1;
+			item1.Tag(winrt::box_value(clicked));
 			items.Append(item1);
 			return;
 		}
@@ -656,12 +658,14 @@ void ReloadMenu2(XML3::XMLElement* root0,XML3::XMLElement* root1, winrt::Windows
 			winrt::Microsoft::UI::Xaml::Controls::RadioMenuFlyoutItem item1;
 			item1.GroupName(g);
 			item1.Text(n);
+			item1.Tag(winrt::box_value(clicked));
 			items.Append(item1);
 			return;
 		}
 
 		winrt::Microsoft::UI::Xaml::Controls::MenuFlyoutItem item1;
 		item1.Text(n);
+		item1.Tag(winrt::box_value(clicked));
 		items.Append(item1);
 	}
 	else
@@ -678,6 +682,7 @@ void ReloadMenu2(XML3::XMLElement* root0,XML3::XMLElement* root1, winrt::Windows
 		{
 			winrt::Microsoft::UI::Xaml::Controls::MenuFlyoutSubItem item1;
 			item1.Text(n);
+			item1.Tag(winrt::box_value(clicked));
 			items.Append(item1);
 			for (size_t i = 0; i < root1->GetChildrenNum(); i++)
 			{
@@ -697,6 +702,7 @@ void ReloadMenu2(XML3::XMLElement* root0, XML3::XMLElement* root1, winrt::Window
 	int sep = 0;
 	if (root1->FindVariableZ("sep"))
 		sep = root1->vv("sep").GetValueInt();
+	auto clicked = root1->vv("clicked").GetWideValue();
 	if (root1->GetChildrenNum() == 0)
 	{
 		if (sep == 1)
@@ -706,6 +712,7 @@ void ReloadMenu2(XML3::XMLElement* root0, XML3::XMLElement* root1, winrt::Window
 			return;
 		}
 		winrt::Microsoft::UI::Xaml::Controls::MenuBarItem item1;
+		item1.Tag(winrt::box_value(clicked));
 		item1.Title(n);
 		items.Append(item1);
 	}
@@ -723,6 +730,7 @@ void ReloadMenu2(XML3::XMLElement* root0, XML3::XMLElement* root1, winrt::Window
 		{
 			winrt::Microsoft::UI::Xaml::Controls::MenuBarItem item1;
 			item1.Title(n);
+			item1.Tag(winrt::box_value(clicked));
 			items.Append(item1);
 			for (size_t i = 0; i < root1->GetChildrenNum(); i++)
 			{

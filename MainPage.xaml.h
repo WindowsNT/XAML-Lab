@@ -370,6 +370,7 @@ namespace winrt::VisualWinUI3::implementation
         void E_RUN1(IInspectable const&, IInspectable const&);
         void E_RUN2(IInspectable const&, IInspectable const&);
         void E_RUN3(IInspectable const&, IInspectable const&);
+        void E_FILE(IInspectable const&, IInspectable const&);
 
     };
 }

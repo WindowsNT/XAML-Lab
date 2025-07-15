@@ -12,6 +12,7 @@ namespace VisualWinUI3
         String PropName;
         Boolean PropSep;
         String PropGroup;
+        String PropClicked;
         Boolean TreeViewPropertiesVisibility;
         Windows.Foundation.Collections.IObservableVector<FileSystemItem> RootItems{ get; };
 

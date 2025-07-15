@@ -134,6 +134,10 @@
       <DependentUpon>CodeView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </ClInclude>
+    <ClInclude Include="FileDialog.xaml.h">
+      <DependentUpon>FileDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
     <ClInclude Include="FileSystemItem.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemSelector.h" />
@@ -165,6 +169,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="CodeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FileDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="MainPage.xaml">
@@ -230,6 +237,10 @@
     <ClCompile Include="Controls\SwapchainPanel.cpp" />
     <ClCompile Include="Controls\ToggleSwitch.cpp" />
     <ClCompile Include="Controls\TreeView.cpp" />
+    <ClCompile Include="FileDialog.xaml.cpp">
+      <DependentUpon>FileDialog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="FileSystemItem.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="Controls\Grid.cpp" />
@@ -281,6 +292,10 @@
     </Midl>
     <Midl Include="CodeView.idl">
       <DependentUpon>CodeView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Midl>
+    <Midl Include="FileDialog.idl">
+      <DependentUpon>FileDialog.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FileSystemItem.idl" />

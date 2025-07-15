@@ -42,7 +42,7 @@ public:
 		{
 			std::vector<wchar_t> txt(100000);
 			if (Type == 0) // IDL
-				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> %s;", p->bindv.c_str());
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> %s { get; };", p->bindv.c_str());
 			if (Type == 1) // H
 				swprintf_s(txt.data(), 100000, L"IObservableVector<FrameworkElement> %s();", p->bindv.c_str());
 			if (Type == 2) // CPP
@@ -53,15 +53,15 @@ public:
 
 	TextBox te1; 
 	te1.Text(L"Hello"); 
-	items.Append(winrt::box_value(te1));
+	items.Append(te1);
 
 	TextBox te2; 
 	te1.Text(L"There"); 
-	items.Append(winrt::box_value(te2));
+	items.Append(te2);
 
 	Button te3; 
-	te3.Content(L"A button"); 
-	items.Append(winrt::box_value(te3));
+	te3.Content(winrt::box_value(L"A button")); 
+	items.Append(te3);
 
 	return items;
 }

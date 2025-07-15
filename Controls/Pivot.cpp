@@ -87,7 +87,7 @@ public:
 		{
 			std::vector<wchar_t> txt(100000);
 			if (Type == 0) // IDL
-				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.PivotItem> %s;", p->bindv.c_str());
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.PivotItem> %s{ get; };", p->bindv.c_str());
 			if (Type == 1) // H
 				swprintf_s(txt.data(), 100000, L"IObservableVector<PivotItem> %s();", p->bindv.c_str());
 			if (Type == 2) // CPP

@@ -8,6 +8,7 @@ namespace VisualWinUI3
 
 		String Name;
 		String Group;
+		String Clicked;
 		Int64 Ptr{ get; };
 		Int64 ParPtr { get; };
 		Boolean IsSelected;
