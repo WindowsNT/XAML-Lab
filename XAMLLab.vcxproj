@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- <Import Project="packages\Microsoft.WindowsAppSDK.1.7.250606001\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.1.7.250606001\build\native\Microsoft.WindowsAppSDK.props')" />
+  <Import Project="packages\Microsoft.WindowsAppSDK.1.7.250606001\build\native\Microsoft.WindowsAppSDK.props" Condition="Exists('packages\Microsoft.WindowsAppSDK.1.7.250606001\build\native\Microsoft.WindowsAppSDK.props')" />
   <Import Project="packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4188\build\Microsoft.Windows.SDK.BuildTools.props" Condition="Exists('packages\Microsoft.Windows.SDK.BuildTools.10.0.26100.4188\build\Microsoft.Windows.SDK.BuildTools.props')" />
-  <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />  <PropertyGroup Label="Globals">
+  <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
@@ -197,6 +198,7 @@
     <ClCompile Include="Controls\Canvas.cpp" />
     <ClCompile Include="Controls\CheckBox.cpp" />
     <ClCompile Include="Controls\ColorPicker.cpp" />
+    <ClCompile Include="Controls\ComboBox.cpp" />
     <ClCompile Include="Controls\CommandBar.cpp" />
     <ClCompile Include="Controls\ContentControl.cpp" />
     <ClCompile Include="Controls\Control.cpp" />
@@ -207,6 +209,7 @@
     <ClCompile Include="Controls\FrameworkElement.cpp" />
     <ClCompile Include="Controls\Image.cpp" />
     <ClCompile Include="Controls\InfoBadge.cpp" />
+    <ClCompile Include="Controls\ListBox.cpp" />
     <ClCompile Include="Controls\ListView.cpp" />
     <ClCompile Include="Controls\MapControl.cpp" />
     <ClCompile Include="Controls\MenuBar.cpp" />
@@ -341,7 +344,7 @@
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-   <ImportGroup Label="ExtensionTargets">
+  <ImportGroup Label="ExtensionTargets">
     <Import Project="packages\Microsoft.Web.WebView2.1.0.3351.48\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.3351.48\build\native\Microsoft.Web.WebView2.targets')" />
     <Import Project="packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="packages\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('packages\Microsoft.Windows.ImplementationLibrary.1.0.250325.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />

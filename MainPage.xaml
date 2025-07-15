@@ -15,14 +15,14 @@
             <DataTemplate x:Key="FileTemplate" x:DataType="local:FileSystemItem">
                 <TreeViewItem>
                     <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
+                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
                     </StackPanel>
                 </TreeViewItem>
             </DataTemplate>
             <DataTemplate x:Key="FolderTemplate" x:DataType="local:FileSystemItem" >
                 <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
+                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
                     </StackPanel>
                 </TreeViewItem>
             </DataTemplate>
@@ -178,9 +178,11 @@
                     <MenuFlyoutItem Text="ToggleSwitch" Click="I_ToggleSwitch" />
                 </MenuFlyoutSubItem>
                 <MenuFlyoutSubItem Text="Collections">
+                    <MenuFlyoutItem Text="ComboBox" Click="I_ComboBox" />
                     <MenuFlyoutItem Text="Expander" Click="I_Expander" />
                     <MenuFlyoutItem Text="FlipView" Click="I_FlipView" />
                     <MenuFlyoutItem Text="GridView" Click="I_GridView" />
+                    <MenuFlyoutItem Text="ListBox" Click="I_ListBox" />
                     <MenuFlyoutItem Text="ListView" Click="I_ListView" />
                     <MenuFlyoutItem Text="TreeView" Click="I_TreeView" />
                 </MenuFlyoutSubItem>
@@ -385,7 +387,7 @@
                     <DataTemplate x:DataType="local:FileSystemItem">
                             <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
+                                    <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
                                 </StackPanel>
                             </TreeViewItem>
                     </DataTemplate>

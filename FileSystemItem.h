@@ -35,7 +35,7 @@ namespace winrt::VisualWinUI3::implementation
 				return;
 			XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
 			if (el == 0) return;
-			if (el->vv("n").GetWideValue() == name)
+			if (Name()  == name)
 				return;
 			el->vv("n").SetWideValue(name.c_str());
 		}
@@ -76,24 +76,28 @@ namespace winrt::VisualWinUI3::implementation
 		}
 
 
+		IObservableVector<VisualWinUI3::FileSystemItem> m_children;
 		IObservableVector<VisualWinUI3::FileSystemItem> Children()
 		{
-			auto children = single_threaded_observable_vector<VisualWinUI3::FileSystemItem>() ;
+			if (!m_children)
+				m_children = single_threaded_observable_vector<VisualWinUI3::FileSystemItem>();
+			else
+				return m_children;
 			if (_ptr)
 			{
 				XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
 				if (!el)
-					return children;
+					return m_children;
 				for(auto child : el->GetChildren())
 				{
 					if (child)
 					{
 						VisualWinUI3::FileSystemItem fsItem((long long)child.get(),(long long)this);
-						children.Append(fsItem);
+						m_children.Append(fsItem);
 					}
 				}
 			}
-			return children;
+			return m_children;
 		}
 
 		// public events

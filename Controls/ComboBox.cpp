@@ -1,25 +1,66 @@
 #include "pch.h"
 #include "property.hpp"
 
-class ITEM_ListView : public XITEM_ListViewBase
+class ITEM_ComboBox : public XITEM_Control
 {
 public:
 
-	ITEM_ListView()
+	ITEM_ComboBox()
 	{
-		ElementName = L"ListView";
-		X = ListView();
+		ElementName = L"ComboBox";
+		X = ComboBox();
 	}
 
 
 	virtual void ApplyProperties()
 	{
-		XITEM_ListViewBase::ApplyProperties();
+		XITEM_Control::ApplyProperties();
 		try
 		{
-
-			auto e = X.as<ListView>();
-			e;
+			auto e = X.as<ComboBox>();
+			for(auto& p : properties)
+			{
+				if (p->n == L"Description")
+				{
+					auto op = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+					if (op)
+					{
+						e.Description(winrt::box_value(op->value));
+					}
+				}
+				if (p->n == L"Header")
+				{
+					auto op = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+					if (op)
+					{
+						e.Header(winrt::box_value(op->value));
+					}
+				}
+				if (p->n == L"IsEditable")
+				{
+					auto op = std::dynamic_pointer_cast<BOOL_PROPERTY>(p);
+					if (op)
+					{
+						e.IsEditable(op->SelectedIndex != 0);
+					}
+				}
+				if (p->n == L"IsTextSearchEnabled")
+				{
+					auto op = std::dynamic_pointer_cast<BOOL_PROPERTY>(p);
+					if (op)
+					{
+						e.IsTextSearchEnabled(op->SelectedIndex != 0);
+					}
+				}
+				if (p->n == L"PlaceholderText")
+				{
+					auto op = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+					if (op)
+					{
+						e.PlaceholderText(op->value);
+					}
+				}
+			}
 		}
 		catch (...)
 		{
@@ -30,7 +71,7 @@ public:
 
 	virtual std::vector<std::shared_ptr<PROPERTY>> CreateProperties(XML3::XMLElement* el) override
 	{
-		auto e = X.as<ListView>();
+		auto e = X.as<ComboBox>();
 		if (!properties.empty())
 			return properties;
 
@@ -38,13 +79,55 @@ public:
 		if (1)
 		{
 			std::shared_ptr<STRING_PROPERTY> op = CreatePropertyItemsSource(e);
-			op->g = L"ListView";
+			op->g = L"ComboBox";
 			op->BindingAnyway = 1;
 			properties.push_back(op);
 		}
 
+		if (1)
+		{
+			// "Description" string
+			auto op = std::make_shared<STRING_PROPERTY>();
+			op->g = L"ComboBox";
+			op->n = L"Header";
+			properties.push_back(op);
+		}
+		if (1)
+		{
+			// "Description" string
+			auto op = std::make_shared<STRING_PROPERTY>();
+			op->g = L"ComboBox";
+			op->n = L"Description";
+			properties.push_back(op);
+		}
+		if (1)
+		{
+			// IsEditable bool
+			auto op = std::make_shared<BOOL_PROPERTY>();
+			op->g = L"ComboBox";
+			op->n = L"IsEditable";
+			op->SelectedIndex = e.IsEditable() ? 1 : 0;
+			properties.push_back(op);
+		}
+		if (1)
+		{
+			// IsTextSearchEnabled bool
+			auto op = std::make_shared<BOOL_PROPERTY>();
+			op->g = L"ComboBox";
+			op->n = L"IsTextSearchEnabled";
+			op->SelectedIndex = e.IsTextSearchEnabled() ? 1 : 0;
+			properties.push_back(op);
+		}
 
-		auto p2 = XITEM_ListViewBase::CreateProperties(el);
+		if (1)
+		{
+			auto op = std::make_shared<STRING_PROPERTY>();
+			op->g = L"ComboBox";
+			op->n = L"PlaceholderText";
+			properties.push_back(op);
+		}
+
+		auto p2 = XITEM_Control::CreateProperties(el);
 		for (auto& pp : p2)
 			properties.push_back(pp);
 		return properties;
@@ -52,7 +135,7 @@ public:
 
 	virtual winrt::Microsoft::UI::Xaml::UIElement Create(int ForWhat, XITEM* par) override
 	{
-		X = ListView();
+		X = ComboBox();
 		the_par = par;
 		if (properties.empty())
 			properties = CreateProperties(nullptr);
@@ -65,14 +148,14 @@ public:
 		
 		AddSomeSource();
 		
-		auto b = X.as<ListView>();
+		auto b = X.as<ComboBox>();
 		b.Tag(box_value((long long)this));
 		return b;
 	}
 
 	void AddSomeSource()
 	{
-		auto b = X.as<ListView>();
+		auto b = X.as<ComboBox>();
 		using namespace winrt;
 		using namespace Windows::Foundation;
 		using namespace Windows::Foundation::Collections;
@@ -97,13 +180,11 @@ public:
 	}
 
 
-
-
 	std::optional<std::wstring> GetCodeForProperty([[maybe_unused]] PROPERTY* p, [[maybe_unused]] int Type) override
 	{
 		if (!p)
 			return {};
-
+		
 		if (p->n == L"ItemsSource")
 		{
 			std::vector<wchar_t> txt(100000);
@@ -141,11 +222,10 @@ public:
 	}
 
 
-
 };
 
 
-std::shared_ptr<XITEM> CreateXItemListView()
+std::shared_ptr<XITEM> CreateXItemComboBox()
 {
-	return std::make_shared< ITEM_ListView>();
+	return std::make_shared< ITEM_ComboBox>();
 }

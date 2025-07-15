@@ -487,6 +487,8 @@ std::shared_ptr<XITEM> CreateXItemProgressRing();
 std::shared_ptr<XITEM> CreateXItemFlipView();
 std::shared_ptr<XITEM> CreateXItemGridView();
 std::shared_ptr<XITEM> CreateXItemListView();
+std::shared_ptr<XITEM> CreateXItemListBox();
+std::shared_ptr<XITEM> CreateXItemComboBox();
 std::shared_ptr<XITEM> CreateXItemTreeView();
 std::shared_ptr<XITEM> CreateXItemCalendarDatePicker();
 std::shared_ptr<XITEM> CreateXItemDatePicker();
@@ -646,6 +648,8 @@ inline void XITEM::Unser(XML3::XMLElement& el)
 		if (el2 == "FlipView")	ch = CreateXItemFlipView();
 		if (el2 == "GridView")	ch = CreateXItemGridView();
 		if (el2 == "ListView")	ch = CreateXItemListView();
+		if (el2 == "ListBox")	ch = CreateXItemListBox();
+		if (el2 == "ComboBox")	ch = CreateXItemComboBox();
 		if (el2 == "TreeView")	ch = CreateXItemTreeView();
 		if (!ch)
 			continue;

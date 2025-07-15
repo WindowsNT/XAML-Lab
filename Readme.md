@@ -31,7 +31,7 @@ You can switch to "x:Bind" mode and then each properties are bound to items. The
 AppBarButton, Button, DropDownButton, ToggleButton, RadioButton, CheckBox, RepeatButton
 
 ### Collections
-FlipView, Listview
+FlipView, ListView, ListBox, ComboBox, GridView, TreeView 
 
 ### Date/Time
 CalendarDatePicker, DatePicker, TimePicker

@@ -664,6 +664,7 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		// XITEM is the SelectClick
 		auto m_rootItems = winrt::single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();
+
 		root_for_tree = std::make_shared<XML3::XMLElement>();
 		root_for_tree->SetElementName(L"Root");
 		root_for_tree->vv("n").SetValue(L"Root");
@@ -1039,16 +1040,16 @@ namespace winrt::VisualWinUI3::implementation
 	};
 	
 	std::vector<std::wstring> items1 = { L"AnimatedVisualPlayer", L"AppBarButton",L"BreadcrumbBar",L"Button",L"CalendarDatePicker",L"CalendarView",L"CheckBox",L"ColorPicker",
-		L"CommandBar",L"DatePicker",L"DropDownButton",L"Expander",L"FlipView",L"GridView",L"HyperlinkButton",
-		L"Image",L"InfoBadge",L"InfoBar",L"ListView",L"MapControl",L"MediaPlayerElement",L"MenuBar",
+		L"ComboBox",L"CommandBar",L"DatePicker",L"DropDownButton",L"Expander",L"FlipView",L"GridView",L"HyperlinkButton",
+		L"Image",L"InfoBadge",L"InfoBar",L"ListBox",L"ListView",L"MapControl",L"MediaPlayerElement",L"MenuBar",
 		L"NavigationViewItem",L"NumberBox",L"PasswordBox",L"PersonPicture",L"Pivot",L"ProgressBar",L"ProgressRing",L"RadioButton",L"RatingControl",
 		L"RepeatButton",L"RichEditBox",L"RichTextBlock",L"Slider",L"TextBlock",L"TreeView",
 		L"TextBox",L"TimePicker",L"ToggleSwitch",L"WebView2" };
 
 	std::vector<std::function<std::shared_ptr<XITEM>()>> itemcalls1 = {
 		CreateXItemAnimatedVisualPlayer,	CreateXItemAppBarButton,	CreateXItemBreadcrumbBar,		CreateXItemButton,		CreateXItemCalendarDatePicker,		CreateXItemCalendarView,		CreateXItemCheckBox,		CreateXItemColorPicker,
-		CreateXItemCommandBar,CreateXItemDatePicker,		CreateXItemDropDownButton,		CreateXItemExpander,		CreateXItemFlipView,			CreateXItemGridView,		CreateXItemHLButton,
-		CreateXItemImage,		CreateXItemInfoBadge,		CreateXItemInfoBar,		CreateXItemListView,		CreateXItemMapControl,		CreateXItemMediaPlayerElement,		CreateXItemMenuBar,
+		CreateXItemComboBox,		CreateXItemCommandBar,CreateXItemDatePicker,		CreateXItemDropDownButton,		CreateXItemExpander,		CreateXItemFlipView,			CreateXItemGridView,		CreateXItemHLButton,
+		CreateXItemImage,		CreateXItemInfoBadge,		CreateXItemInfoBar,		CreateXItemListBox, CreateXItemListView,		CreateXItemMapControl,		CreateXItemMediaPlayerElement,		CreateXItemMenuBar,
 		CreateXItemNavigationViewItem,CreateXItemNumberBox,		CreateXItemPasswordBox,		CreateXItemPersonPicture,		CreateXItemPivot,		CreateXItemProgressBar,		CreateXItemProgressRing,		CreateXItemRadioButton,		CreateXItemRatingControl,
 		CreateXItemRepeatButton,		CreateXItemRichEditBox,		CreateXItemRichTextBlock,		CreateXItemSlider,			CreateXItemTextBlock,CreateXItemTreeView,
 		CreateXItemTextBox, CreateXItemTimePicker, 	CreateXItemToggleSwitch, CreateXItemWebView2
@@ -1562,13 +1563,16 @@ namespace winrt::MyApp::implementation
 					if (!prop)
 						continue;
 
-					auto cvi = item->GetCodeForProperty(prop.get(),1);
-					if (cvi.has_value())
+					if (prop->bindv.length())
 					{
-						cod += L"\t\t";
-						cod += cvi.value();
-						cod += L"\r\n";
-						continue;
+						auto cvi = item->GetCodeForProperty(prop.get(), 1);
+						if (cvi.has_value())
+						{
+							cod += L"\t\t";
+							cod += cvi.value();
+							cod += L"\r\n";
+							continue;
+						}
 					}
 
 					if (prop->bindv.length())
@@ -1703,20 +1707,24 @@ namespace winrt::MyApp::implementation
 					if (!prop)
 						continue;
 
-					auto cvi = item->GetCodeForProperty(prop.get(), 2);
-					if (cvi.has_value())
+					if (prop->bindv.length())
 					{
-						auto lines = split(cvi.value(), '\n');
-						for (auto& line : lines)
+						auto cvi = item->GetCodeForProperty(prop.get(), 2);
+						if (cvi.has_value())
 						{
-							if (line.length() == 0)
-								continue;
-							while (line.length() && line[line.size() - 1] == '\r')
-								line.erase(line.size() - 1, 1); // Remove \r at the end
-							cod += L"\r\n\t\t";
-							cod += line;
+							auto lines = split(cvi.value(), '\n');
+							for (auto& line : lines)
+							{
+								if (line.length() == 0)
+									continue;
+								while (line.length() && line[line.size() - 1] == '\r')
+									line.erase(line.size() - 1, 1); // Remove \r at the end
+								cod += L"\r\n\t\t";
+								cod += line;
+							}
 						}
 					}
+
 				}
 			}
 
@@ -2205,6 +2213,18 @@ namespace winrt::MyApp::implementation
 		if (!CanAddThis())
 			return;
 		GenericAddItemUnder(CreateXItemListView);
+	}
+	void MainPage::I_ListBox(IInspectable const&, IInspectable const&)
+	{
+		if (!CanAddThis())
+			return;
+		GenericAddItemUnder(CreateXItemListBox);
+	}
+	void MainPage::I_ComboBox(IInspectable const&, IInspectable const&)
+	{
+		if (!CanAddThis())
+			return;
+		GenericAddItemUnder(CreateXItemComboBox);
 	}
 	void MainPage::I_TreeView(IInspectable const&, IInspectable const&)
 	{

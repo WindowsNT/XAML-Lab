@@ -375,6 +375,8 @@ namespace winrt::VisualWinUI3::implementation
         void I_FlipView(IInspectable const&, IInspectable const&);
         void I_GridView(IInspectable const&, IInspectable const&);
         void I_ListView(IInspectable const&, IInspectable const&);
+        void I_ListBox(IInspectable const&, IInspectable const&);
+        void I_ComboBox(IInspectable const&, IInspectable const&);
         void I_TreeView(IInspectable const&, IInspectable const&);
         void E_XAML(IInspectable const&, IInspectable const&);
         void E_CODE(IInspectable const&, IInspectable const&);

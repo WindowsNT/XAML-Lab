@@ -196,6 +196,12 @@
     <ClCompile Include="Controls\ToggleButton.cpp">
       <Filter>UIElement\FrameworkElement\Control\ContentControl\ButtonBase\ToggleButton</Filter>
     </ClCompile>
+    <ClCompile Include="Controls\ListBox.cpp">
+      <Filter>UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls\ComboBox.cpp">
+      <Filter>UIElement\FrameworkElement\Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileSystemItem.h">
@@ -359,5 +365,9 @@
     <ResourceCompile Include="main.rc">
       <Filter>Others</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
 </Project>
