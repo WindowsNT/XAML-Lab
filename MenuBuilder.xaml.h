@@ -111,7 +111,6 @@ namespace winrt::VisualWinUI3::implementation
         }
         winrt::event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> m_propertyChanged;
 
-        FileSystemTemplateSelector selector;
         XML3::XMLElement root;
 
         MenuBuilder()
@@ -396,12 +395,6 @@ R"(<root>
 	
         }
 
-        winrt::Microsoft::UI::Xaml::Controls::DataTemplateSelector dts()
-        {
-            auto top = Content().as<Controls::Panel>();
-            selector.LoadTemplates(top);
-            return selector;
-        }
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::VisualWinUI3::FileSystemItem> RootItems()
         {
             auto m_rootItems = winrt::single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();

@@ -12,7 +12,7 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="1*"/>
 			</Grid.ColumnDefinitions>
-			<Grid Name="GridTop">
+			<Grid Margin="10,10,10,10" Name="GridTop">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="1*"/>
 				</Grid.RowDefinitions>
@@ -23,18 +23,57 @@
 				</Grid.ColumnDefinitions>
 				<BreadcrumbBar b___ItemsSource="BreadcrumbBarItems" Grid.Column="1"/>
 			</Grid>
-			<Grid Grid.Row="2" Name="GridFiles">
+			<Grid Grid.Row="1" Margin="10,10,10,10" Name="GridTools">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="1*"/>
+				</Grid.ColumnDefinitions>
+				<Button Content="UP" Margin="5,5,5,5"/>
+				<Button Grid.Column="1" Content="NEW FOLDER" Margin="5,5,5,5"/>
+				<DropDownButton Grid.Column="2" Content="TOOLS"/>
+			</Grid>
+			<Grid Grid.Row="2" Margin="10,10,10,10" Name="GridFiles">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="1*"/>
+				</Grid.ColumnDefinitions>
+				<TreeView Name="TreeBrowser"/>
+				<ListView Grid.Column="1" Name="ListFiles" HorizontalAligment="Left" VerticalAligment="Top"/>
+			</Grid>
+			<Grid Grid.Row="3" Margin="10,10,10,10" Name="GridInput">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="1*"/>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*"/>
-					<ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				<TreeView CanDragItems="True" CanReorderItems="True" Name="TreeBrowser"/>
-				<ListView Grid.Column="1" Name="ListFiles"/>
+				<TextBox Text="TextBox"/>
+				<ComboBox IsTextSearchEnabled="True" Grid.Column="1" MinWidth="200"/>
+			</Grid>
+			<Grid Grid.Row="4" Margin="10,10,10,10" Name="GridButtons">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Orientation="Horizontal" HorizontalAligment="Right">
+					<Button Content="Open" Margin="10,10,10,10" Name="buttonOpen"/>
+					<Button Content="Cancel" Margin="10,10,10,10" Name="buttonCancel"/>
+				</StackPanel>
 			</Grid>
 		</Grid>
 	</Design>
 	<Pages />
+	<Menus />
 </e>

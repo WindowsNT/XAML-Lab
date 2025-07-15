@@ -34,7 +34,6 @@ namespace VisualWinUI3
         Windows.Foundation.Collections.IObservableVector<Item> Elements{ get; };
         Windows.Foundation.Collections.IObservableVector<Item> Panels{ get; };
 		Microsoft.UI.Xaml.Controls.DataTemplateSelector PropertyTypeSelector{ get; };
-        Microsoft.UI.Xaml.Controls.DataTemplateSelector dts{ get; };
         Windows.Foundation.Collections.IObservableVector<FileSystemItem> RootItems{ get; };
 
     }

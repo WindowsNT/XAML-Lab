@@ -11,22 +11,6 @@
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Grid.Resources>
-            <DataTemplate x:Key="FileTemplate" x:DataType="local:FileSystemItem">
-                <TreeViewItem>
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
-                    </StackPanel>
-                </TreeViewItem>
-            </DataTemplate>
-            <DataTemplate x:Key="FolderTemplate" x:DataType="local:FileSystemItem" >
-                <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
-                    </StackPanel>
-                </TreeViewItem>
-            </DataTemplate>
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />

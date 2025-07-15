@@ -94,9 +94,6 @@
     <ClCompile Include="FileSystemItem.cpp">
       <Filter>Containers</Filter>
     </ClCompile>
-    <ClCompile Include="FileSystemTemplateSelector.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
     <ClCompile Include="Controls\InfoBadge.cpp">
       <Filter>UIElement\FrameworkElement\Control</Filter>
     </ClCompile>
@@ -207,9 +204,6 @@
     <ClInclude Include="FileSystemItem.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="FileSystemTemplateSelector.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Containers</Filter>
     </ClInclude>
@@ -251,9 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="FileSystemItem.idl">
-      <Filter>Containers</Filter>
-    </Midl>
-    <Midl Include="FileSystemTemplateSelector.idl">
       <Filter>Containers</Filter>
     </Midl>
     <Midl Include="Item.idl">

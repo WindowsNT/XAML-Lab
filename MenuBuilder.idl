@@ -14,7 +14,6 @@ namespace VisualWinUI3
         String PropGroup;
         Boolean TreeViewPropertiesVisibility;
         Windows.Foundation.Collections.IObservableVector<FileSystemItem> RootItems{ get; };
-        Microsoft.UI.Xaml.Controls.DataTemplateSelector dts{ get; };
 
     }
 }

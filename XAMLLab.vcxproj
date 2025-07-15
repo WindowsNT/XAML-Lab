@@ -135,7 +135,6 @@
       <SubType>Code</SubType>
     </ClInclude>
     <ClInclude Include="FileSystemItem.h" />
-    <ClInclude Include="FileSystemTemplateSelector.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemSelector.h" />
     <ClInclude Include="MainPage.xaml.h">
@@ -232,7 +231,6 @@
     <ClCompile Include="Controls\ToggleSwitch.cpp" />
     <ClCompile Include="Controls\TreeView.cpp" />
     <ClCompile Include="FileSystemItem.cpp" />
-    <ClCompile Include="FileSystemTemplateSelector.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="Controls\Grid.cpp" />
     <ClCompile Include="Controls\GridView.cpp" />
@@ -286,7 +284,6 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="FileSystemItem.idl" />
-    <Midl Include="FileSystemTemplateSelector.idl" />
     <Midl Include="Item.idl" />
     <Midl Include="ItemSelector.idl" />
     <Midl Include="MainPage.idl">

@@ -12,20 +12,6 @@
 
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="20">
         <Grid.Resources>
-            <DataTemplate x:Key="FileTemplate" x:DataType="local:FileSystemItem">
-                <TreeViewItem>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
-                    </StackPanel>
-                </TreeViewItem>
-            </DataTemplate>
-            <DataTemplate x:Key="FolderTemplate" x:DataType="local:FileSystemItem" >
-                <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Name,Mode=TwoWay}" />
-                    </StackPanel>
-                </TreeViewItem>
-            </DataTemplate>
            
         </Grid.Resources>
         <Grid.RowDefinitions>
@@ -36,7 +22,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
@@ -106,7 +92,16 @@
         <DropDownButton Margin="10" x:Name="xDropDown" Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Content="{x:Bind txt(43);}">
         </DropDownButton>
         <TreeView x:Name="xTreeView" Grid.Row="3" Grid.Column="0"  VerticalAlignment="Top" HorizontalAlignment="Left" Loaded="TreeLoaded"
-                  ItemsSource="{x:Bind RootItems, Mode=OneWay}" ItemTemplateSelector="{x:Bind dts}" RightTapped="RightTree" Tapped="LeftTree">
+                  ItemsSource="{x:Bind RootItems, Mode=OneWay}" RightTapped="RightTree" Tapped="LeftTree">
+            <TreeView.ItemTemplate>
+                <DataTemplate x:DataType="local:FileSystemItem">
+                    <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
+                        </StackPanel>
+                    </TreeViewItem>
+                </DataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
         <Grid Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" Visibility="{x:Bind TreeViewPropertiesVisibility,Mode=OneWay}" BorderBrush="Aqua" BorderThickness="1"> 
             <Grid.ColumnDefinitions>

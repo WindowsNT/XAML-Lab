@@ -191,19 +191,6 @@ namespace winrt::VisualWinUI3::implementation
 			m_propertyChanged(*this, winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"i3"));
 		}
 
-        FileSystemTemplateSelector selector;
-        bool SelectorLoaded = false;
-
-        winrt::Microsoft::UI::Xaml::Controls::DataTemplateSelector dts()
-        {
-            if (!SelectorLoaded)
-            {
-                SelectorLoaded = true;
-                auto top = Content().as<Controls::Panel>();
-                selector.LoadTemplates(top);
-            }
-            return selector;
-        }
 
         std::shared_ptr<XML3::XMLElement> root_for_tree;
         winrt::Windows::Foundation::Collections::IObservableVector<winrt::VisualWinUI3::FileSystemItem> RootItems();

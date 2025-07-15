@@ -392,6 +392,7 @@ public:
 		ee->SetElementName(XML3::XMLU(ElementName.c_str()).bc());
 		XMLPropertiesFor(*ee, this, properties);
 
+
 		bool ISXItemNavigationView(XITEM * xit);
 		if (ISXItemNavigationView(this))
 			return;

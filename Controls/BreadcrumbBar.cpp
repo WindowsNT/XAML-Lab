@@ -1,6 +1,5 @@
 ﻿#include "pch.h"
 #include "property.hpp"
-#include "FileSystemTemplateSelector.g.h"
 
 #include "paragraphcode.hpp"
 

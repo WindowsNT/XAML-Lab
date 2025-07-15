@@ -586,6 +586,34 @@ void XMLPropertiesFor(XML3::XMLElement& ee, XITEM* xit, std::vector <std::shared
 		}
 
 	}
+
+	// TreeView add sample item
+	if (ExportForXAML == 1 && xit->ElementName == L"TreeView")
+	{
+		/*
+		        <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="local:FileSystemItem">
+                            <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind Name,Mode=OneWay}" />
+                                </StackPanel>
+                            </TreeViewItem>
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+
+		*/
+		auto& e1 = ee.AddElement("TreeView.ItemTemplate");
+		auto& e2 = e1.AddElement("DataTemplate");
+		e2.vv("x:DataType").SetWideValue(L"local:MyItem");
+		auto& e3 = e2.AddElement("TreeViewItem");
+		e3.vv("ItemsSource").SetWideValue(L"{x:Bind Children,Mode=OneWay}");
+		e3.vv("IsExpanded").SetValue("True");
+		auto& e4 = e3.AddElement("StackPanel");
+		e4.vv("Orientation").SetWideValue(L"Horizontal");
+		auto& e5 = e4.AddElement("TextBlock");
+		e5.vv("Text").SetWideValue(L"{x:Bind Name,Mode=OneWay}");
+
+	}
 }
 
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "property.hpp"
-#include "FileSystemTemplateSelector.g.h"
+#include "filesystemitem.h"
 
 extern std::map<HWND, winrt::Windows::Foundation::IInspectable> windows;
 
@@ -62,6 +62,15 @@ public:
 		auto e = X.as<TreeView>();
 		if (!properties.empty())
 			return properties;
+
+		if (1)
+		{
+			std::shared_ptr<STRING_PROPERTY> op = CreatePropertyItemsSource(e);
+			op->g = L"TreeView";
+			op->BindingAnyway = 1;
+			properties.push_back(op);
+		}
+
 		if (1)
 		{
 
@@ -69,7 +78,6 @@ public:
 			op->g = L"TreeView";
 			op->S = 1;
 			op->n = L"CanDragItems";
-			op->SelectedIndex = e.CanDragItems();
 			properties.push_back(op);
 		}
 		if (1)
@@ -78,7 +86,6 @@ public:
 			std::shared_ptr<BOOL_PROPERTY> op = std::make_shared<BOOL_PROPERTY>();
 			op->g = L"TreeView";
 			op->n = L"CanReorderItems";
-			op->SelectedIndex = e.CanReorderItems();
 			properties.push_back(op);
 		}
 		if (1)
@@ -119,67 +126,95 @@ public:
 		b.Tag(box_value((long long)this));
 		return b;
 	}
-	XML3::XMLElement root_for_tree;
+
+	std::optional<std::wstring> GetCodeForProperty([[maybe_unused]] PROPERTY* p, [[maybe_unused]] int Type) override
+	{
+		if (!p)
+			return {};
+
+		if (p->n == L"ItemsSource")
+		{
+			std::vector<wchar_t> txt(100000);
+			if (Type == 0) // IDL
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<winrt::MyApp::MyItem> %s;", p->bindv.c_str());
+			if (Type == 1) // H
+				swprintf_s(txt.data(), 100000, L"IObservableVector<winrt::MyApp::MyItem> %s();", p->bindv.c_str());
+			if (Type == 2) // CPP
+			{
+				swprintf_s(txt.data(), 100000, LR"(IObservableVector<winrt::MyApp::MyItem> %s()
+{
+	auto items = single_threaded_observable_vector<winrt::MyApp::MyItem>();
+
+	for (int i = 0; i < 10; i++)
+		{
+			wchar_t txt[100] = {};
+			swprintf_s(txt, L"Item %%d", i + 1);
+			winrt::MyApp::MyItem tb1;
+			tb1.Name(txt);
+			items.Append(tb1);
+		}
+
+	return items;
+}
+)", p->bindv.c_str());
+
+			}
+			return txt.data();
+		}
+
+		return {};
+	}
+
+
+
+	TreeViewItem TItem(const wchar_t* t)
+	{
+		auto treeViewItem = TreeViewItem();
+		treeViewItem.IsExpanded(true);
+		// Create StackPanel
+		auto stackPanel = StackPanel();
+		stackPanel.Orientation(Orientation::Horizontal);
+		auto textBlock = TextBlock(); textBlock.Text(t);
+		stackPanel.Children().Append(textBlock);
+		// Set as TreeViewItem Content
+		treeViewItem.Content(stackPanel);
+		return treeViewItem;
+	}
 
 	void AddSomeSource()
 	{
-		auto b = X.as<TreeView>();
-		winrt::VisualWinUI3::FileSystemTemplateSelector selector;
+		using namespace winrt::Microsoft::UI::Xaml::Controls;
+		using namespace winrt::Windows::Foundation::Collections;
 
-		for (auto& wi : windows)
+		auto tree = X.as<TreeView>(); // your TreeView
+
+		// Create root node
+		auto rootNode = TreeViewNode();
+		rootNode.Content(box_value(L"Test 1"));
+		rootNode.IsExpanded(true);
+
+		// Add children
+		for (int i = 0; i < 5; i++)
 		{
-			auto the_window = wi.second.as<winrt::VisualWinUI3::MainWindow>();
-
-			// Find the MainPage for it
-			auto tnv = the_window.Content().as<winrt::Microsoft::UI::Xaml::Controls::NavigationView>();
-			if (!tnv)
-				continue;
-
-			auto fr = tnv.FindName(L"contentFrame").as<winrt::Microsoft::UI::Xaml::Controls::Frame>();
-			if (!fr)
-				continue;
-			auto main_page = fr.Content().as<winrt::VisualWinUI3::MainPage>();
-			if (!main_page)
-				continue;
-
-			auto top = main_page.Content().as<Controls::Panel>();
-			selector.LoadTemplates(top);
-			if (1)
-				break;
+			auto childNode = TreeViewNode();
+			childNode.Content(box_value(L"Child " + std::to_wstring(i + 1)));
+			rootNode.Children().Append(childNode);
 		}
 
-		b.ItemTemplateSelector(selector);
+		// Add more root nodes
+		auto rootNode2 = TreeViewNode();
+		rootNode2.Content(box_value(L"Test 2"));
 
-		using namespace winrt;
-		using namespace Windows::Foundation;
-		using namespace Windows::Foundation::Collections;
-		using namespace Microsoft::UI::Xaml;
-		using namespace Microsoft::UI::Xaml::Controls;
-		using namespace Microsoft::UI::Xaml::Media;
-		auto m_rootItems = winrt::single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();
+		auto rootNode3 = TreeViewNode();
+		rootNode3.Content(box_value(L"Test 3"));
 
-		static bool jx = false;
-		if (jx == false)
-		{
-			jx = true;
-			const char* re = R"(<root n="Root">
-<e n="Name 1">
-	<e n="Sub name 1" />
-	<e n="Sub name 2">
-		<e n="Sub sub name 1" />
-		<e n="Sub sub name 2" />
-	</e>
-</e>
-</root>)";
-			root_for_tree = re;
-		}
-		winrt::VisualWinUI3::FileSystemItem fsit((long long)&root_for_tree, 0);
-		m_rootItems.Append(fsit);
-
-
-		b.ItemsSource(m_rootItems);
-
+		// Set RootNodes
+		auto rootNodes = tree.RootNodes();
+		rootNodes.Append(rootNode);
+		rootNodes.Append(rootNode2);
+		rootNodes.Append(rootNode3);
 	}
+
 	
 };
 
