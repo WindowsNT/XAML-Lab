@@ -26,12 +26,17 @@ bool DeleteLoop(std::shared_ptr<XITEM> r, XITEM* xit);
 
 namespace winrt::VisualWinUI3::implementation
 {
+	bool DisableRefresh = 0;
     void MainPage::Refresh(const wchar_t* s)
     {
+		if (DisableRefresh)
+			return;
         m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ s });
     }
 	void MainPage::Refresh2(winrt::hstring s)
 	{
+		if (DisableRefresh)
+			return;
 		m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ s });
 	}
 
@@ -217,7 +222,9 @@ namespace winrt::VisualWinUI3::implementation
 			return;
 		Push();
 		project->root = nullptr;
+		DisableRefresh = 1;
 		Build();
+		DisableRefresh = 0;
 		Refresh();
 	}
 
@@ -362,7 +369,9 @@ namespace winrt::VisualWinUI3::implementation
 						else
 							ForceCreateProject();
 						project->Unser(*el->GetChildren()[0]);
+						DisableRefresh = 1;
 						Build();
+						DisableRefresh = 0;
 						Refresh();
 					});
 				mf.Items().Append(item1);
@@ -619,6 +628,7 @@ namespace winrt::VisualWinUI3::implementation
 		Refresh2(L"CanAddElement");
 	}
 
+	int PERName = 1;
 	void PopulateElementRoot(XML3::XMLElement* e, XITEM* xit)
 	{
 		if (!e || !xit)
@@ -643,7 +653,9 @@ namespace winrt::VisualWinUI3::implementation
 		e->vv("vv").SetValueULongLong((unsigned long long)xit);
 		for (size_t i = 0; i < xit->children.size(); i++)
 		{
-			auto& e2 = e->AddElement("e");
+			char eln[100] = {};
+			sprintf_s(eln, 100, "e%d", PERName++);
+			auto& e2 = e->AddElement(eln);
 			PopulateElementRoot(&e2, xit->children[i].get());
 		}
 	}
@@ -652,14 +664,20 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		// XITEM is the SelectClick
 		auto m_rootItems = winrt::single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();
-		root_for_tree = {};
-		root_for_tree.SetElementName(L"Root");
-		root_for_tree.vv("n").SetValue(L"Root");
-		root_for_tree.vv("vv").SetValueULongLong(0);
+		root_for_tree = std::make_shared<XML3::XMLElement>();
+		root_for_tree->SetElementName(L"Root");
+		root_for_tree->vv("n").SetValue(L"Root");
+		root_for_tree->vv("g").SetValue("");
+		root_for_tree->vv("vv").SetValueULongLong(0);
 		if (!project)
 			return m_rootItems;
-		PopulateElementRoot(&root_for_tree, project->root.get());
-		winrt::VisualWinUI3::FileSystemItem fsit((long long)&root_for_tree, 0);
+		PERName = 1;
+		PopulateElementRoot(root_for_tree.get(), project->root.get());
+#ifdef _DEBUG
+		auto ser = root_for_tree->Serialize();
+		OutputDebugStringA(ser.c_str());
+#endif
+		winrt::VisualWinUI3::FileSystemItem fsit((long long)root_for_tree.get(), 0);
 		m_rootItems.Append(fsit);
 		return m_rootItems;
 	}
@@ -714,7 +732,24 @@ namespace winrt::VisualWinUI3::implementation
 			{
 				if (root->children.size())
 				{
-					item2.Text(root->ElementName);
+					auto txt = root->ElementName;
+					
+					// find name
+					for(auto& p : root->properties)
+					{
+						if (p->n == L"Name")
+						{
+							auto strp = std::dynamic_pointer_cast<STRING_PROPERTY>(p);
+							if (strp)
+							{
+								txt += L" (";
+								txt += strp->value;
+								txt += L")";
+								break;
+							}
+						}
+					}
+					item2.Text(txt);
 					item2.Tag(box_value((long long)root.get()));
 					mbi.Items().Append(item2);
 
@@ -834,7 +869,9 @@ namespace winrt::VisualWinUI3::implementation
 			project->xfile = std::make_shared<XML3::XML>(project->file.c_str());
 			ToOpenFile.clear();
 			project->Unser(*project->xfile->GetRootElement()["Design"].GetChildren()[0]);
+			DisableRefresh = 1;
 			Build();
+			DisableRefresh = 0;
 			Refresh();
 			ReloadMenuList();
 			dirty = 0;

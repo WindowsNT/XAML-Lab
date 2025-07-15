@@ -372,8 +372,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <MenuBar Grid.Row="0" HorizontalAlignment="Stretch" x:Name="MenuRootSelect" Visibility="{x:Bind SeeSelectButton,Mode=OneWay}" />
-            <TreeView x:Name="xTreeV" ItemsSource="{x:Bind RootItems, Mode=OneWay}" ItemTemplateSelector="{x:Bind dts,Mode=OneWay}" Grid.Row="1" Tapped="LeftTree" Visibility="{x:Bind SeeTreeView,Mode=OneWay}">
-            </TreeView>
+
+            <TreeView x:Name="xTreeV" ItemsSource="{x:Bind RootItems, Mode=OneWay}" ItemTemplateSelector="{x:Bind dts,Mode=OneWay}" Grid.Row="1" Tapped="LeftTree" Visibility="{x:Bind SeeTreeView,Mode=OneWay}" />
+
+
             <Rectangle Height="1" 
                    Grid.Row="2"
                    x:Name="xLine2"

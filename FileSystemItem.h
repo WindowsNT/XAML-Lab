@@ -38,7 +38,6 @@ namespace winrt::VisualWinUI3::implementation
 			if (el->vv("n").GetWideValue() == name)
 				return;
 			el->vv("n").SetWideValue(name.c_str());
-			RaisePropertyChanged(L"Name");
 		}
 
 		winrt::hstring Group() const
@@ -54,7 +53,6 @@ namespace winrt::VisualWinUI3::implementation
 			if (el->vv("g").GetWideValue() == group)
 				return;
 			el->vv("g").SetWideValue(group.c_str());
-			RaisePropertyChanged(L"Group");
 		}
 
 		bool IsFolder() const
@@ -75,7 +73,6 @@ namespace winrt::VisualWinUI3::implementation
 				return;
 			
 			_isSelected = selected;
-			RaisePropertyChanged(L"IsSelected");
 		}
 
 		IObservableVector<VisualWinUI3::FileSystemItem> Children()
@@ -86,7 +83,7 @@ namespace winrt::VisualWinUI3::implementation
 				XML3::XMLElement* el = (XML3::XMLElement*)_ptr;
 				if (!el)
 					return children;
-				for(auto& child : el->GetChildren())
+				for(auto child : el->GetChildren())
 				{
 					if (child)
 					{
