@@ -257,6 +257,20 @@ std::vector<std::shared_ptr<PROPERTY>> CreatePropertiesForText(T e, const wchar_
 	return p;
 }
 
+
+template <typename T>
+std::shared_ptr<STRING_PROPERTY> CreatePropertyItemsSource(T e)
+{
+	if (e)
+	{
+		std::shared_ptr<STRING_PROPERTY> op = std::make_shared<STRING_PROPERTY>();
+		op->n = L"ItemsSource";
+		op->BindingAnyway = 1; // This is a binding anyway
+		return op;
+	}
+	return nullptr;
+}
+
 template <typename T>
 std::vector<std::shared_ptr<PROPERTY>> CreatePropertiesForIcon(T e)
 {

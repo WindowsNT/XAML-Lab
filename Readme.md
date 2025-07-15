@@ -5,8 +5,7 @@ There is a collection of templates that can be used to start with.
 Some controls offer C++ small code snippets.
 You can preview IDL/H/XAML/CPP code with F8.
 
-There is a direct download executable [here](https://www.turbo-play.com/update2/tu.php?p=f3cf159b-de75-4427-8fe0-81a7ae61d3fa&f=88887777-A932-7654-A2E5-DECB481E355D).
-The executable is updated automatically when you run it, so you always have the latest version.
+You can get it from the [Microsoft Store](https://apps.microsoft.com/detail/9NHXB98Z5GDH?hl=en-us&gl=GR&ocid=pdpshare). There is also a direct download auto-updating executable [here](https://www.turbo-play.com/update2/tu.php?p=f3cf159b-de75-4427-8fe0-81a7ae61d3fa&f=88887777-A932-7654-A2E5-DECB481E355D).
 
 ![Image1](1.jpg?raw=true)
 ![Image1](2.jpg?raw=true)

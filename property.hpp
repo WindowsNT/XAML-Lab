@@ -115,17 +115,20 @@ class STRING_PROPERTY : public PROPERTY
 public:
 	std::wstring value;
 	std::wstring def = L"";
+	bool BindingAnyway = 0;
 	virtual void Ser(XML3::XMLElement& el) override
 	{
 		PROPERTY::Ser(el);
 		el.vv("v").SetValue(value);
 		el.vv("def").SetValue(def);
+		el.vv("ba").SetValueInt(BindingAnyway);
 	}
 	virtual void Unser(XML3::XMLElement& el) override
 	{
 		PROPERTY::Unser(el);
 		value = el.vv("v").GetWideValue();
 		def = el.vv("def").GetWideValue();
+		BindingAnyway = el.vv("ba").GetValueInt(0) != 0;
 	}
 };
 
@@ -340,7 +343,7 @@ public:
 		CallbackFunctions.clear();
 	}
 
-	virtual std::optional<FrameworkElement> HasCodeDemos()
+	virtual std::optional<std::wstring> GetCodeForProperty([[maybe_unused]] PROPERTY* p,[[maybe_unused]] int Type /* 0 idl 1 h 2 cpp */)
 	{
 		return {};
 	}

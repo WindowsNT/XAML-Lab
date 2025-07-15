@@ -144,8 +144,6 @@ namespace winrt::VisualWinUI3::implementation
         }
 
 
-        bool ViewCodeSample();
-        void ViewCodeSampleClick(IInspectable const&, IInspectable const&);
 
 		long long _wnd = 0;
         long long wnd()

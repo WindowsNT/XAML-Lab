@@ -33,6 +33,19 @@ namespace winrt::VisualWinUI3::implementation
 
     }
 
+	void CodeView::CopyCode(IInspectable const&, IInspectable const&)
+	{
+		std::wstring txt;
+		if (_selected_index == 0) txt = _t_idl;
+		if (_selected_index == 1) txt = _t_xaml;
+		if (_selected_index == 2) txt = _t_h;
+		if (_selected_index == 3) txt = _t_cpp;
+		if (txt.empty())
+			return;
+		void ToClip(HWND MainWindow, const wchar_t* t, bool Empty);
+		ToClip(0, txt.c_str(), true);
+	}
+
     void CodeView::PopulateRB()
     {
 		auto top = Content().as<Panel>();

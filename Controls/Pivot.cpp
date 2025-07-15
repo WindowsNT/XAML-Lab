@@ -39,6 +39,17 @@ public:
 		if (!properties.empty())
 			return properties;
 
+		if (1)
+		{
+			std::shared_ptr<STRING_PROPERTY> op = CreatePropertyItemsSource(e);
+			if (op)
+			{
+				op->g = L"Pivot";
+				op->BindingAnyway = 1;
+				properties.push_back(op);
+			}
+		}
+
 
 		auto p2 = XITEM_ItemsControl::CreateProperties(el);
 		for (auto& pp : p2)
@@ -65,25 +76,31 @@ public:
 		return b;
 	}
 
-	std::optional<FrameworkElement> HasCodeDemos() override
-	{
-		using namespace Microsoft::UI::Xaml::Controls;
-		using namespace Microsoft::UI::Xaml::Documents;
-		using namespace Microsoft::UI::Xaml::Media;
-		RichTextBlock rtb;
 
-		rtb.Blocks().Append(PlainParagraph(LR"(To create the Pivot items:)"));
-		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<Pivot ItemsSource="{x:Bind PivotItems,Mode=OneWay}" ... />)")[0]);
-		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
-		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<PivotItem> PivotItems()
+
+	std::optional<std::wstring> GetCodeForProperty([[maybe_unused]] PROPERTY* p, [[maybe_unused]] int Type) override
+	{
+		if (!p)
+			return {};
+
+		if (p->n == L"ItemsSource")
+		{
+			std::vector<wchar_t> txt(100000);
+			if (Type == 0) // IDL
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.PivotItem> %s;", p->bindv.c_str());
+			if (Type == 1) // H
+				swprintf_s(txt.data(), 100000, L"IObservableVector<PivotItem> %s();", p->bindv.c_str());
+			if (Type == 2) // CPP
+			{
+				swprintf_s(txt.data(), 100000, LR"(IObservableVector<PivotItem> %s()
 {
 	auto items = single_threaded_observable_vector<PivotItem>();
+
 
 	for (int i = 0; i < 5; i++)
 	{
 		wchar_t txt[100] = {};
-		swprintf_s(txt, L"Item %d", i + 1);
+		swprintf_s(txt, L"Item %%d", i + 1);
 		PivotItem tb1;
 		tb1.Header(winrt::box_value(txt));	
 		pages.Append(tb1);
@@ -91,10 +108,17 @@ public:
 
 	return items;
 }
-)")[0]);
+)", p->bindv.c_str());
 
-		return rtb;
+			}
+			return txt.data();
+		}
+
+		return {};
 	}
+
+
+
 	void AddSomeSource()
 	{
 		auto b = X.as<Pivot>();

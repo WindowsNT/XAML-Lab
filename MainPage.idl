@@ -12,7 +12,6 @@ namespace VisualWinUI3
         Boolean ViewProperties;
         Boolean ViewPanels;
         Boolean ViewElements;
-        Boolean ViewCodeSample{ get; };
         Boolean CanAddElement{ get; };
         Boolean CanAddPanel{ get; };
 		Boolean SeeTreeView{ get; };

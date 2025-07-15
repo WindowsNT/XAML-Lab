@@ -6,6 +6,7 @@ namespace VisualWinUI3
     runtimeclass CodeView : Microsoft.UI.Xaml.Window,Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         CodeView();
+    static String txt(Int32 sidx);
     String t_idl;
     String t_xaml;
     String t_h;

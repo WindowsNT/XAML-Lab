@@ -9,9 +9,18 @@
     mc:Ignorable="d"
     Title="CodeView">
 
-<Grid>	<Grid.RowDefinitions>		<RowDefinition Height="Auto"/>        <RowDefinition Height="*"/>    </Grid.RowDefinitions>    <SelectorBar x:Name="SelectorBar1" Grid.Row="0" SelectionChanged="LVC">
-        <SelectorBarItem Text="IDL" Icon="Memo" x:Name="si0" />
-            <SelectorBarItem Text="XAML" Icon="Edit" x:Name="si1"/>
-            <SelectorBarItem  Text="H" Icon="Document" x:Name="si2"/>
-            <SelectorBarItem  Text="CPP" Icon="Document" x:Name="si3"/>
-    </SelectorBar>        <RichTextBlock Grid.Row="1" Margin="10" x:Name="rtb">    </RichTextBlock>    </Grid></Window>
+<Grid>	<Grid.RowDefinitions>		<RowDefinition Height="Auto"/>        <RowDefinition Height="*"/>    </Grid.RowDefinitions>        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">            <SelectorBar x:Name="SelectorBar1" Grid.Row="0" SelectionChanged="LVC">
+                <SelectorBarItem Text="IDL" Icon="Memo" x:Name="si0" />
+                <SelectorBarItem Text="XAML" Icon="Edit" x:Name="si1"/>
+                <SelectorBarItem  Text="H" Icon="Document" x:Name="si2"/>
+                <SelectorBarItem  Text="CPP" Icon="Document" x:Name="si3"/>
+            </SelectorBar>            <Button ToolTipService.ToolTip="{x:Bind txt(80)}" Click="CopyCode" Style="{ThemeResource AccentButtonStyle}">
+                <SymbolIcon Symbol="Copy"/>
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <TextBlock Text="{x:Bind txt(4);}" />
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>        <ScrollViewer Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Auto">
+            <RichTextBlock  x:Name="rtb">            </RichTextBlock>        </ScrollViewer>    </Grid></Window>

@@ -14,39 +14,7 @@ public:
 		X = BreadcrumbBar();
 	}
 
-	std::optional<FrameworkElement> HasCodeDemos() override
-	{
-		using namespace Microsoft::UI::Xaml::Controls;
-		using namespace Microsoft::UI::Xaml::Documents;
-		using namespace Microsoft::UI::Xaml::Media;
-		RichTextBlock rtb;
-
-		rtb.Blocks().Append(PlainParagraph(LR"(To populate the Breadcrumb with data, for example 2 TextBlocks and 1 Button:)"));
-		rtb.Blocks().Append(ColoredParagraph(L"<!-- XAML -->"));
-		rtb.Blocks().Append(PreParagraph(LR"(<BreadcrumbBar ItemsSource="{x:Bind BreadcrumbBarItems,Mode=OneWay}" ... />)")[0]);
-		rtb.Blocks().Append(ColoredParagraph(L"// C++"));
-		rtb.Blocks().Append(PreParagraph(LR"(IObservableVector<FrameworkElement> BreadcrumbBarItems()
-{
-	auto items = single_threaded_observable_vector<FrameworkElement>();
-
-	TextBox te1; 
-	te1.Text(L"Hello"); 
-	items.Append(winrt::box_value(te1));
-
-	TextBox te2; 
-	te1.Text(L"There"); 
-	items.Append(winrt::box_value(te2));
-
-	Button te3; 
-	te3.Content(L"A button"); 
-	items.Append(winrt::box_value(te3));
-
-	return items;
-}
-)")[0]);
-
-		return rtb;
-	}
+	
 
 	virtual void ApplyProperties()
 	{
@@ -66,12 +34,65 @@ public:
 		}
 	}
 
+	std::optional<std::wstring> GetCodeForProperty([[maybe_unused]] PROPERTY* p, [[maybe_unused]] int Type) override
+	{
+		if (!p)
+			return {};
+
+		if (p->n == L"ItemsSource")
+		{
+			std::vector<wchar_t> txt(100000);
+			if (Type == 0) // IDL
+				swprintf_s(txt.data(), 100000, L"Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> %s;", p->bindv.c_str());
+			if (Type == 1) // H
+				swprintf_s(txt.data(), 100000, L"IObservableVector<FrameworkElement> %s();", p->bindv.c_str());
+			if (Type == 2) // CPP
+			{
+				swprintf_s(txt.data(), 100000, LR"(IObservableVector<FrameworkElement> %s()
+{
+	auto items = single_threaded_observable_vector<FrameworkElement>();
+
+	TextBox te1; 
+	te1.Text(L"Hello"); 
+	items.Append(winrt::box_value(te1));
+
+	TextBox te2; 
+	te1.Text(L"There"); 
+	items.Append(winrt::box_value(te2));
+
+	Button te3; 
+	te3.Content(L"A button"); 
+	items.Append(winrt::box_value(te3));
+
+	return items;
+}
+)", p->bindv.c_str());
+
+			}
+			return txt.data();
+		}
+
+		return {};
+	}
+
 
 	virtual std::vector<std::shared_ptr<PROPERTY>> CreateProperties(XML3::XMLElement* el) override
 	{
 		auto e = X.as<BreadcrumbBar>();
 		if (!properties.empty())
 			return properties;
+
+		if (1)
+		{
+			std::shared_ptr<STRING_PROPERTY> op = CreatePropertyItemsSource(e);
+			if (op)
+			{
+				op->g = L"BreadcrumbBar";
+				op->BindingAnyway = 1;
+				properties.push_back(op);
+			}
+		}
+
 		auto p2 = XITEM_Control::CreateProperties(el);
 		for (auto& pp : p2)
 			properties.push_back(pp);

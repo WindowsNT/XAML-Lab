@@ -107,32 +107,6 @@ namespace winrt::VisualWinUI3::implementation
 		Message3Result = 3;
 	}
 
-	bool MainPage::ViewCodeSample()
-	{
-		auto FirstSelected = FirstSelectedItem();
-		if (!FirstSelected)
-			return false;
-		auto val = FirstSelected->HasCodeDemos();
-		if (!val.has_value())
-			return false;
-		return true;
-	}
-
-	void MainPage::ViewCodeSampleClick(IInspectable const&, IInspectable const&)
-	{
-		auto FirstSelected = FirstSelectedItem();
-		if (!FirstSelected)
-			return;
-		auto val = FirstSelected->HasCodeDemos();
-		if (!val.has_value())
-			return;
-
-		auto topnv = Content().as<Panel>();
-		ContentDialog cd = topnv.FindName(L"TestCD").as<ContentDialog>();
-		cd.Content(val.value());
-		cd.ShowAsync();
-	}
-
 
 	void MainPage::AskSaveChanges()
 	{
@@ -1182,9 +1156,16 @@ namespace winrt::VisualWinUI3::implementation
 					continue; // Skip this property
 			}
 
-			if (PropertyItemsMode() == 0 && !pro->bindv.empty())
-				continue; // This property is used in binding
+			bool IsBindingProperty = false;
+			if (pro->bindv.length())
+				IsBindingProperty = true;
 
+			auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
+			if (string_type && string_type->BindingAnyway)
+				IsBindingProperty = true;
+
+			if (PropertyItemsMode() == 0 && IsBindingProperty)
+				continue; // This property is used in binding
 
 			if (PropertyItemsMode() == 1)
 			{
@@ -1258,7 +1239,6 @@ namespace winrt::VisualWinUI3::implementation
 					children.Append(item);
 				}
 
-				auto string_type = std::dynamic_pointer_cast<STRING_PROPERTY>(pro);
 				if (string_type)
 				{
 					VisualWinUI3::Item item;
@@ -1439,6 +1419,14 @@ namespace MyApp
 				if (prop->bindv.length())
 				{
 					// To the idl
+					auto cvi = item->GetCodeForProperty(prop.get(),0);
+					if (cvi.has_value())
+					{
+						idl += L"\t\t";
+						idl += cvi.value();
+						idl += L"\r\n";
+						continue;
+					}
 					if (1)
 					{
 						auto str = std::dynamic_pointer_cast<STRING_PROPERTY>(prop);
@@ -1471,7 +1459,7 @@ namespace MyApp
 
 
 		cv.t_idl(idl.c_str());
-		if (fprops.size())
+		if (1)
 		{
 			// Create the .H file code
 			std::wstring cod = LR"(#pragma once
@@ -1489,6 +1477,8 @@ namespace winrt::MyApp::implementation
 			for(size_t i = 0 ; i < fprops.size() ; i++)
 			{
 				auto& f = fprops[i];
+
+
 				auto name = f.name;
 				if (name.length() == 0)
 					name = L"Callback" + std::to_wstring(NextCallbackIfNotName++);
@@ -1519,6 +1509,16 @@ namespace winrt::MyApp::implementation
 				{
 					if (!prop)
 						continue;
+
+					auto cvi = item->GetCodeForProperty(prop.get(),1);
+					if (cvi.has_value())
+					{
+						cod += L"\t\t";
+						cod += cvi.value();
+						cod += L"\r\n";
+						continue;
+					}
+
 					if (prop->bindv.length())
 					{
 						// To the idl
@@ -1584,7 +1584,7 @@ namespace winrt::MyApp::factory_implementation
 		}
 
 		NextCallbackIfNotName = 1;
-		if (fprops.size())
+		if (1)
 		{
 			// Create the .CPP file code
 			std::wstring cod = LR"(#include "pch.h"
@@ -1599,6 +1599,7 @@ using namespace Microsoft::UI::Xaml::Controls;
 
 namespace winrt::MyApp::implementation
 {
+	...
 
 )";
 			cod += L"***";
@@ -1629,17 +1630,44 @@ namespace winrt::MyApp::implementation
 				auto lines = split(f.content.c_str(), '\n');
 				for(auto& line : lines)
 				{
-					
 					if (line.length() == 0)
 						continue;
 					while(line.length() && line[line.size() - 1] == '\r')
 						line.erase(line.size() - 1, 1); // Remove \r at the end
-
 					cod += L"\r\n\t\t";
 					cod += line;
 				}
 				cod += L"\r\n\t}\r\n";
 			}
+
+
+			// And the declaration of the properties
+			for (auto& item : allitems)
+			{
+				if (!item)
+					continue;
+				for (auto& prop : item->properties)
+				{
+					if (!prop)
+						continue;
+
+					auto cvi = item->GetCodeForProperty(prop.get(), 2);
+					if (cvi.has_value())
+					{
+						auto lines = split(cvi.value(), '\n');
+						for (auto& line : lines)
+						{
+							if (line.length() == 0)
+								continue;
+							while (line.length() && line[line.size() - 1] == '\r')
+								line.erase(line.size() - 1, 1); // Remove \r at the end
+							cod += L"\r\n\t\t";
+							cod += line;
+						}
+					}
+				}
+			}
+
 			cod += L"***";
 			cod += LR"(
 }

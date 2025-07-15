@@ -16,6 +16,14 @@ namespace winrt::VisualWinUI3::implementation
             m_propertyChanged.remove(token);
         }
 
+        static winrt::hstring txt(long jx)
+        {
+            return s(jx);
+        }
+
+
+        void CopyCode(IInspectable const&, IInspectable const&);
+
         CodeView()
         {
             // Xaml objects should not call InitializeComponent during construction.

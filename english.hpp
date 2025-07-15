@@ -76,7 +76,9 @@ L"Due to a bug in WebView2 it's not automatically resized.",
 L"Show code",
 L"Callable function for %s event",
 L"// Element is clicked",
+L"This is a binding property",
+L"Copy",
 };
 
-#define MAX_LANG 78
+#define MAX_LANG 80
 
