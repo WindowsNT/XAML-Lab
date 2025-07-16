@@ -245,6 +245,7 @@ namespace winrt::VisualWinUI3::implementation
         void OnTemplate4(IInspectable const&, IInspectable const&);
         void OnTemplate5(IInspectable const&, IInspectable const&);
         void OnTemplate6(IInspectable const&, IInspectable const&);
+        void OnTemplate7(IInspectable const&, IInspectable const&);
         
         void ListViewPick(IInspectable const&, IInspectable const&);
         void ListViewPick1(IInspectable const&, IInspectable const&);

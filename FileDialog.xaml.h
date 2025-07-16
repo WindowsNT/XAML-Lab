@@ -36,7 +36,22 @@ namespace winrt::VisualWinUI3::implementation
 			}
 		}
 
+        std::wstring _SelectedPath;
+        winrt::hstring SelectedPath()
+        {
+			return _SelectedPath.c_str();
+		}
+        void SelectedPath(winrt::hstring path)
+        {
+            if (_SelectedPath == path.c_str())
+				return;
+            _SelectedPath = path.c_str();
+            m_propertyChanged(*this, winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"SelectedPath"));
+		}
 
+
+        void ListT(IInspectable param1, IInspectable param2);
+        void ListDT(IInspectable param1, IInspectable param2);
         void BIClicked(IInspectable param1, IInspectable param2);
         void ButtonUp(IInspectable param1, IInspectable param2);
         void ButtonNewFolder(IInspectable param1, IInspectable param2);

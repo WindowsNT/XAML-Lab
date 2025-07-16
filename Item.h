@@ -143,6 +143,20 @@ namespace winrt::VisualWinUI3::implementation
         }
 
 
+        winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage _bitmap1;
+        void Bitmap1(winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage b)
+        {
+			if (_bitmap1 == b)
+                return;
+			_bitmap1 = b;
+			m_propertyChanged(*this, winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventArgs(L"Bitmap1"));
+		}
+        winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage Bitmap1()
+        {
+			return _bitmap1;
+		}
+
+
         std::wstring _tip;
         bool TipVisible()
         {

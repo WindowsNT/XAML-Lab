@@ -10,6 +10,7 @@
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"shell32.lib")
 #pragma comment(lib,"dwrite.lib")
+#pragma comment(lib,"windowscodecs.lib")
 
 
 #pragma comment(linker,"\"/manifestdependency:type='win32' \

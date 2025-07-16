@@ -20,6 +20,7 @@ namespace VisualWinUI3
 			String Name4;
 			String Tip;
 			IInspectable II;
+			Microsoft.UI.Xaml.Media.Imaging.BitmapImage Bitmap1;
 			Boolean TipVisible{ get; };
 			Boolean Sel{ get; set; };
 			Windows.UI.Color Color0;

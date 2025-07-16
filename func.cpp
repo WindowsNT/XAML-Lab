@@ -5,7 +5,8 @@ std::shared_ptr<XML3::XML> SettingsX;
 std::wstring datafolder;
 
 #include "property.hpp"
-
+#include <winrt/Microsoft.Graphics.Imaging.h>
+#include <winrt/Windows.Graphics.Imaging.h>
 
 
 bool is_light_theme() {
@@ -1063,7 +1064,104 @@ PIDLIST_ABSOLUTE PidlFromPath(const wchar_t* path)
 	return nullptr;
 }
 
-#include <propkey.h>
+
+winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage ImageFromIcon(HICON hIcon,HBITMAP hBitmap)
+{
+	using namespace winrt;
+	using namespace Windows::Storage::Streams;
+	using namespace Windows::Graphics::Imaging;
+
+	CComPtr<IWICImagingFactory> wicFactory;
+	CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER,
+		IID_PPV_ARGS(&wicFactory));
+
+	CComPtr<IWICBitmap> wicBitmap;
+	if (hIcon)
+		winrt::check_hresult(wicFactory->CreateBitmapFromHICON(hIcon, &wicBitmap));
+	if (hBitmap)
+		winrt::check_hresult(wicFactory->CreateBitmapFromHBITMAP(hBitmap, nullptr, WICBitmapUseAlpha, &wicBitmap));
+
+	CComPtr<IWICStream> wicStream;
+	winrt::check_hresult(wicFactory->CreateStream(&wicStream));
+
+	CComPtr<IStream> stream;
+	CreateStreamOnHGlobal(nullptr, TRUE, &stream);
+	winrt::check_hresult(wicStream->InitializeFromIStream(stream.p));
+
+	CComPtr<IWICBitmapEncoder> encoder;
+	winrt::check_hresult(wicFactory->CreateEncoder(GUID_ContainerFormatPng, nullptr, &encoder));
+	winrt::check_hresult(encoder->Initialize(wicStream.p, WICBitmapEncoderNoCache));
+
+	CComPtr<IWICBitmapFrameEncode> frame;
+	CComPtr<IPropertyBag2> props;
+	winrt::check_hresult(encoder->CreateNewFrame(&frame, &props));
+	winrt::check_hresult(frame->Initialize(props.p));
+	winrt::check_hresult(frame->WriteSource(wicBitmap.p, nullptr));
+	winrt::check_hresult(frame->Commit());
+	winrt::check_hresult(encoder->Commit());
+
+	// Rewind stream
+	LARGE_INTEGER pos = {};
+	stream->Seek(pos, STREAM_SEEK_SET, nullptr);
+
+	// Convert to IRandomAccessStream
+	CComPtr<IStream> comStream = stream;
+	IRandomAccessStream winrtStream = nullptr;
+	CreateRandomAccessStreamOverStream(
+		comStream.p, BSOS_DEFAULT, guid_of<IRandomAccessStream>(), winrt::put_abi(winrtStream));
+
+	winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage bmpImg;
+	bmpImg.SetSource(winrtStream);
+	return bmpImg;
+}
+
+
+HBITMAP GetIconFromPath(const std::wstring& path, int size = 32)
+{
+	CComPtr<IShellItem> shellItem;
+	HRESULT hr = SHCreateItemFromParsingName(path.c_str(), nullptr, IID_PPV_ARGS(&shellItem));
+	if (FAILED(hr)) 
+		return nullptr;
+
+	CComPtr<IShellItemImageFactory> imageFactory;
+	imageFactory = shellItem;
+	if (!imageFactory) 
+		return nullptr;
+
+	SIZE iconSize = { size, size };
+	HBITMAP hBitmap = nullptr;
+	SIIGBF flags = SIIGBF_ICONONLY | SIIGBF_BIGGERSIZEOK;
+	hr = imageFactory->GetImage(iconSize, flags, &hBitmap);
+	if (FAILED(hr) || !hBitmap) 
+		return nullptr;
+
+	return hBitmap;
+
+/*	// Convert HBITMAP to HICON
+	ICONINFO iconInfo = {};
+	iconInfo.fIcon = TRUE;
+	iconInfo.hbmColor = hBitmap;
+	iconInfo.hbmMask = hBitmap;
+
+	HICON hIcon = CreateIconIndirect(&iconInfo);
+
+	DeleteObject(hBitmap); // Cleanup
+
+	return hIcon;
+	*/
+}
+
+bool IsPlainFile(IShellFolder* parentFolder, ITEMIDLIST* pidlItem)
+{
+	DWORD attrs = SFGAO_STREAM | SFGAO_FILESYSTEM;
+
+	if (SUCCEEDED(parentFolder->GetAttributesOf(1, (LPCITEMIDLIST*)&pidlItem, &attrs)))
+	{
+		return (attrs & SFGAO_STREAM) && (attrs & SFGAO_FILESYSTEM);
+	}
+	return false;
+}
+
 void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
 {
 	// Enumerate children
@@ -1083,12 +1181,36 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
 	LPITEMIDLIST pidlItem;
 	ULONG fetched = 0;
 
+	if (!pEnum)
+		return;	
 	while (pEnum->Next(1, &pidlItem, &fetched) == S_OK) {
 		STRRET str;
 		pFolder->GetDisplayNameOf(pidlItem, SHGDN_NORMAL, &str);
 		CHILD_ITEM ci;
 
-		// Is it a folder?
+		wchar_t name[MAX_PATH] = {};
+		StrRetToBufW(&str, pidlItem, name, MAX_PATH);
+
+
+	
+		MYPIDL fullPidl;
+		#pragma warning(disable:4090)
+		fullPidl.reset(ILCombine(root, pidlItem));
+		wchar_t path[MAX_PATH] = {};
+		SHGetPathFromIDListW(fullPidl.get(), path);
+
+		if (IsPlainFile(pFolder, pidlItem))
+		{
+			// It's a plain file
+			ci.Type = 0; // File
+		}
+		else
+		{
+			// It's not a plain file, check if it's a folder
+			ci.Type = 1; // Folder
+		}
+
+	/*	// Is it a folder?
 		CComPtr<IShellFolder> pFolder2;
 		pFolder->BindToObject(pidlItem, nullptr, IID_PPV_ARGS(&pFolder2));
 		if (pFolder2)
@@ -1106,14 +1228,36 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
 						bool isDirectory = (vtIsDir.ulVal & FILE_ATTRIBUTE_DIRECTORY) != 0;
 						if (isDirectory)
 							ci.Type = 1;
+						else
+							ci.Type = 0;
 					}
 					VariantClear(&vtIsDir);
 				}
 			}
 		}
+		*/
+	
+		// Icon to BitmapImage
+		try
+		{
+			auto bi = GetIconFromPath(path);
+			if (bi)
+			{
+				auto ifi = ImageFromIcon(nullptr, bi);
+				if (ifi)
+					ci.icon = ifi;
+				else
+				{
+					MessageBeep(0);
+				}
+			}
+		}
+		catch (...)
+		{
 
-		wchar_t name[MAX_PATH] = {};
-		StrRetToBufW(&str, pidlItem, name, MAX_PATH);
+		}
+
+	
 
 #pragma warning(disable:4090)
 		ci.pidl.reset(pidlItem);

@@ -98,7 +98,10 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		OnTemplate0(template_6);
 	}
-
+	void MainPage::OnTemplate7(IInspectable const&, IInspectable const&)
+	{
+		OnTemplate0(template_7);
+	}
 
 	int Message3Result = -1;
 	void MainPage::Message3_1(IInspectable const&, IInspectable const&)

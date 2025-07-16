@@ -79,7 +79,7 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            <ListView MinWidth="100" ItemsSource="{x:Bind FileItemsX, Mode=OneWay}" Grid.Column="1" Name="ListFiles" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <ListView MinWidth="100" ItemsSource="{x:Bind FileItemsX, Mode=OneWay}" Grid.Column="1" Name="ListFiles" HorizontalAlignment="Left" VerticalAlignment="Top" IsDoubleTapEnabled="True" DoubleTapped="ListDT" Tapped="ListT">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Item">
                         <Grid>
@@ -88,11 +88,13 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{x:Bind Name1}" Grid.Column="0"/>
-                            <TextBlock Text="{x:Bind Name2}" Grid.Column="1"/>
-                            <TextBlock Text="{x:Bind Name3}" Grid.Column="2"/>
-                            <TextBlock Text="{x:Bind Name4}" Grid.Column="3"/>
+                            <Image Source="{x:Bind Bitmap1,Mode=OneWay}" Grid.Column="0" VerticalAlignment="Top" Margin="5,5,5,5" />
+                            <TextBlock Text="{x:Bind Name1,Mode=OneWay}" Grid.Column="1" VerticalAlignment="Top" Margin="5,5,5,5" />
+                            <TextBlock Text="{x:Bind Name2,Mode=OneWay}" Grid.Column="2" VerticalAlignment="Top" Margin="5,5,5,5" />
+                            <TextBlock Text="{x:Bind Name3,Mode=OneWay}" Grid.Column="3" VerticalAlignment="Top" Margin="5,5,5,5" />
+                            <TextBlock Text="{x:Bind Name4,Mode=OneWay}" Grid.Column="4" VerticalAlignment="Top" Margin="5,5,5,5" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -106,7 +108,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Text="TextBox" Margin="5,5,5,5"/>
+            <TextBox Text="{x:Bind SelectedPath,Mode=TwoWay}" Margin="5,5,5,5"/>
             <ComboBox Grid.Column="1" Margin="5,5,5,5" MinWidth="200"/>
         </Grid>
         <Grid Grid.Row="4" Margin="10,10,10,10" Name="GridButtons">

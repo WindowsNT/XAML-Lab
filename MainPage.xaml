@@ -219,7 +219,8 @@
                 <MenuFlyoutItem Text="Notepad" Click="OnTemplate2" />
                 <MenuFlyoutItem Text="Image Browser with NavigationView" Click="OnTemplate4" />
                 <MenuFlyoutItem Text="Download Dialog" Click="OnTemplate5" />
-                <MenuFlyoutItem Text="Button with Bind and Callback" Click="OnTemplate6" />   
+                <MenuFlyoutItem Text="Button with Bind and Callback" Click="OnTemplate6" />
+                <MenuFlyoutItem Text="Open File Dialog" Click="OnTemplate7" />   
 <!--                <MenuFlyoutItem Text="Web Browser" Click="OnTemplate3" /> -->
                     <!--                <MenuFlyoutItem Text="Menu+ListView" Click="OnTemplate1" >
                 </MenuFlyoutItem>-->

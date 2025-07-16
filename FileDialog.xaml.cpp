@@ -108,6 +108,72 @@ namespace winrt::VisualWinUI3::implementation
 		auto items = single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();
 		return items;
 	}
+
+	void FileDialog::ListT(IInspectable param1, IInspectable param2)
+	{
+		auto lv = param1.as<ListView>();
+		auto selectedItems = lv.SelectedItems();
+		if (selectedItems.Size() == 0)
+			return;
+		auto it = selectedItems.GetAt(0).try_as<winrt::VisualWinUI3::Item>();
+		if (!it)
+			return;
+		if (it.Boolean0())
+		{
+			SelectedPath(L"");
+			return;
+		}
+
+		// Put it to the text box
+		auto ii = it.II();
+		if (ii)
+		{
+			auto pidl = DeserializePIDL(ii.as<winrt::Windows::Storage::Streams::IBuffer>());
+			if (pidl)
+			{
+				// Get the full path
+				PWSTR pszName = nullptr;
+				HRESULT hr = SHGetNameFromIDList(pidl, SIGDN_FILESYSPATH, &pszName);
+				if (SUCCEEDED(hr))
+				{
+					SelectedPath(pszName);
+					CoTaskMemFree(pszName);
+				}
+			}
+		}
+		else
+		{
+			SelectedPath(L"");
+		}
+	}
+
+	void FileDialog::ListDT(IInspectable param1, IInspectable param2)
+	{
+		auto lv = param1.as<ListView>();
+		auto selectedItems = lv.SelectedItems();
+		if (selectedItems.Size() == 0)
+			return;
+		auto it = selectedItems.GetAt(0).try_as<winrt::VisualWinUI3::Item>();
+		if (!it)
+			return;
+
+		// Is it folder?
+		if (it.Boolean0())
+		{
+
+			// Set the current path to the selected item
+			CurrentPath(it.II());
+			m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"BreadcrumbBarItems" });
+			m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"FileItemsX" });
+		}
+		else
+		{
+
+		}
+	}
+
+
+
 	IObservableVector<winrt::VisualWinUI3::Item> FileDialog::FileItemsX()
 	{
 		auto items = single_threaded_observable_vector<winrt::VisualWinUI3::Item>();
@@ -130,7 +196,22 @@ namespace winrt::VisualWinUI3::implementation
 		for (auto& c : ci)
 		{
 			Item itx;
+			itx.Boolean0(c.Type == 1);
 			itx.Name1(c.displname);
+			if (c.pidl.get())
+			{
+				// Absolute path
+				MYPIDL fullPidl;
+				fullPidl.reset(ILCombine(_pidl.get(), c.pidl.get()));
+
+				itx.II(SerializePIDL(fullPidl.get()));
+			}
+			if (c.icon.has_value())
+			{
+				// Cast it to BitmapImage
+				auto bim = std::any_cast<winrt::Microsoft::UI::Xaml::Media::Imaging::BitmapImage>(c.icon);
+				itx.Bitmap1(bim);
+			}
 			items.Append(itx);
 		}
 		return items;

@@ -31,6 +31,7 @@
 #include <uxtheme.h>
 #include <atlbase.h>
 #include <wincodec.h>
+#include <propkey.h>
 
 
 // Undefine GetCurrentTime macro to prevent
@@ -66,10 +67,13 @@
 #include <winrt/Windows.Media.Playback.h>
 #include <winrt/Windows.Media.Core.h>
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Graphics.Imaging.h>
+#include <winrt/Windows.Storage.Streams.h>
 
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Microsoft.UI.Xaml.Documents.h>
 #include <winrt/Microsoft.UI.Xaml.Media.h>
+#include <shcore.h>
 
 #include "xml3all.h"
 #include "json.hpp"
