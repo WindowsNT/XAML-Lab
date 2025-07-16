@@ -1,15 +1,17 @@
 import "FileSystemItem.idl";
+import "Item.idl";
 
 namespace VisualWinUI3
 {
     [default_interface]
-    runtimeclass FileDialog : Microsoft.UI.Xaml.Window
+    runtimeclass FileDialog : Microsoft.UI.Xaml.Window,Microsoft.UI.Xaml.Data.INotifyPropertyChanged
     {
         FileDialog();
 
-    Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> BreadcrumbBarItems{ get; };
+    IInspectable CurrentPath;
+    Windows.Foundation.Collections.IObservableVector<VisualWinUI3.Item> BreadcrumbBarItems{ get; };
     Windows.Foundation.Collections.IObservableVector<VisualWinUI3.FileSystemItem> TreeItems{ get; };
-    Windows.Foundation.Collections.IObservableVector<Microsoft.UI.Xaml.FrameworkElement> FileItemsX{ get; };
+    Windows.Foundation.Collections.IObservableVector<VisualWinUI3.Item> FileItemsX{ get; };
 
 
     }

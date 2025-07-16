@@ -17,6 +17,8 @@ namespace winrt::VisualWinUI3::implementation
 		double _d2 = 0.0;
         std::wstring _n1;
         std::wstring _n2;
+        std::wstring _n3;
+        std::wstring _n4;
         std::wstring _v0;
 
         // xitems
@@ -40,6 +42,14 @@ namespace winrt::VisualWinUI3::implementation
         hstring Name2()
         {
             return _n2.c_str();
+        }
+        hstring Name3()
+        {
+            return _n3.c_str();
+        }
+        hstring Name4()
+        {
+            return _n4.c_str();
         }
         int Type()
         {
@@ -99,6 +109,15 @@ namespace winrt::VisualWinUI3::implementation
         void Int0(long n);
         void Value0(hstring n);
 
+        IInspectable _II;
+        void II(IInspectable j)
+        {
+            _II = j;
+        }
+        IInspectable II()
+        {
+            return _II;
+        }
 
         winrt::hstring ToString() 
         {
@@ -113,6 +132,14 @@ namespace winrt::VisualWinUI3::implementation
         void Name2(hstring n)
         {
             _n2 = n.c_str();
+        }
+        void Name3(hstring n)
+        {
+            _n3 = n.c_str();
+        }
+        void Name4(hstring n)
+        {
+            _n4 = n.c_str();
         }
 
 

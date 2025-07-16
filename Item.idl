@@ -16,7 +16,10 @@ namespace VisualWinUI3
 			String Value0;
 			String Name1;
 			String Name2;
+			String Name3;
+			String Name4;
 			String Tip;
+			IInspectable II;
 			Boolean TipVisible{ get; };
 			Boolean Sel{ get; set; };
 			Windows.UI.Color Color0;

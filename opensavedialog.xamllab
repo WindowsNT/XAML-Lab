@@ -21,7 +21,7 @@
 					<ColumnDefinition Width="1*"/>
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
-				<BreadcrumbBar b___ItemsSource="BreadcrumbBarItems" Grid.Column="1"/>
+				<BreadcrumbBar b___ItemsSource="BreadcrumbBarItems" ItemClicked="BIClicked" Grid.Column="1"/>
 			</Grid>
 			<Grid Grid.Row="1" Margin="10,10,10,10" Name="GridTools">
 				<Grid.RowDefinitions>

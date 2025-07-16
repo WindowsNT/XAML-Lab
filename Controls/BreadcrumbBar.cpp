@@ -24,7 +24,18 @@ public:
 			auto e = X.as<BreadcrumbBar>();
 			for (auto& p : properties)
 			{
-				p;
+				if (p->n == L"ItemClicked")
+				{
+					auto op = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(p);
+					if (op)
+					{
+						if (op->value.empty())
+							continue;
+
+						op->f.name = op->value;
+						CallbackFunctions.push_back(op->f);
+					}
+				}
 			}
 		}
 		catch (...)
@@ -91,6 +102,21 @@ public:
 				properties.push_back(op);
 			}
 		}
+		if (1)
+		{
+			auto p1 = CreatePropertyForGenericCallback(e, L"ItemClicked");
+			if (p1)
+			{
+				p1->g = L"Events.BreadcrumbBar";
+				auto op = std::dynamic_pointer_cast<FUNCTION_PROPERTY>(p1);
+				if (op)
+				{
+					op->f.content = s(78);
+				}
+				properties.push_back(p1);
+			}
+		}
+
 
 		auto p2 = XITEM_Control::CreateProperties(el);
 		for (auto& pp : p2)
@@ -140,8 +166,6 @@ public:
 				pages.Append(winrt::box_value(b1));
 				continue;
 			}
-			TextBox te1;
-			te1.Text(txt);
 			pages.Append(winrt::box_value(txt));
 		}
 		b.ItemsSource(pages);

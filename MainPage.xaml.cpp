@@ -1325,6 +1325,17 @@ namespace winrt::VisualWinUI3::implementation
 	{
 		winrt::VisualWinUI3::FileDialog j;
 		j.ExtendsContentIntoTitleBar(true);
+
+		PIDLIST_ABSOLUTE pidlDesktop = nullptr;
+#ifdef _DEBUG
+		pidlDesktop = PidlFromPath(L"r:\\iep");
+#else
+		SHGetKnownFolderIDList(FOLDERID_Desktop, 0, nullptr, &pidlDesktop);
+#endif
+
+		j.CurrentPath(SerializePIDL(pidlDesktop));
+		CoTaskMemFree(pidlDesktop);
+
 		j.Activate();
 
 	}

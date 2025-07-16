@@ -118,3 +118,103 @@ inline std::vector<std::wstring> split(const std::wstring& s, wchar_t delim)
 }
 
 inline bool ExportForXAML = 0;
+
+
+winrt::Windows::Storage::Streams::IBuffer SerializePIDL(PCIDLIST_ABSOLUTE pidl);
+PIDLIST_ABSOLUTE DeserializePIDL(winrt::Windows::Storage::Streams::IBuffer const& buffer);
+PIDLIST_ABSOLUTE GetParentPIDL(PCIDLIST_ABSOLUTE pidl);
+PIDLIST_ABSOLUTE PidlFromPath(const wchar_t* path);
+
+
+#pragma warning(disable:4090)
+class MYPIDL {
+public:
+    // Default constructor
+    MYPIDL() noexcept : m_pidl(nullptr) {}
+
+    // Constructor from raw pointer (takes ownership)
+    explicit MYPIDL(ITEMIDLIST* pidl) noexcept : m_pidl(pidl) {}
+
+    // Copy constructor (deep copy)
+    MYPIDL(const MYPIDL& other) {
+        m_pidl = other.m_pidl ? ILClone(other.m_pidl) : nullptr;
+    }
+
+    // Move constructor
+    MYPIDL(MYPIDL&& other) noexcept : m_pidl(other.m_pidl) {
+        other.m_pidl = nullptr;
+    }
+
+    // Copy assignment
+    MYPIDL& operator=(const MYPIDL& other) {
+        if (this != &other) {
+            Free();
+            m_pidl = other.m_pidl ? ILClone(other.m_pidl) : nullptr;
+        }
+        return *this;
+    }
+
+    // Move assignment
+    MYPIDL& operator=(MYPIDL&& other) noexcept {
+        if (this != &other) {
+            Free();
+            m_pidl = other.m_pidl;
+            other.m_pidl = nullptr;
+        }
+        return *this;
+    }
+
+    // Destructor
+    ~MYPIDL() {
+        Free();
+    }
+
+    // Get the raw pointer
+    ITEMIDLIST* get() const noexcept {
+        return m_pidl;
+    }
+
+    // Release ownership and return the raw pointer
+    ITEMIDLIST* release() noexcept {
+        ITEMIDLIST* temp = m_pidl;
+        m_pidl = nullptr;
+        return temp;
+    }
+
+    // Reset to a new PIDL (takes ownership)
+    void reset(ITEMIDLIST* pidl = nullptr) {
+        if (m_pidl != pidl) {
+            Free();
+            m_pidl = pidl;
+        }
+    }
+
+    // Check if valid
+    explicit operator bool() const noexcept {
+        return m_pidl != nullptr;
+    }
+
+private:
+    void Free() {
+        if (m_pidl) {
+            ILFree(m_pidl);  // CoTaskMemFree also works, but ILFree is safer
+            m_pidl = nullptr;
+        }
+    }
+
+    ITEMIDLIST* m_pidl;
+};
+#pragma warning(default:4090)
+
+struct CHILD_ITEM
+{
+    MYPIDL pidl;
+    int Type = 0; // 0 file 1 folder etc
+    std::wstring displname;
+    unsigned long long sz = 0;
+    FILETIME ft = {};
+    std::wstring type;
+    std::any icon;
+};
+
+

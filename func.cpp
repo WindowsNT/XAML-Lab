@@ -1008,3 +1008,117 @@ std::map<std::wstring,int> LoadFontIconNamesAndMappings()
 	return m;
 	*/
 }
+
+PIDLIST_ABSOLUTE GetParentPIDL(PCIDLIST_ABSOLUTE pidl)
+{
+	if (!pidl) return nullptr;
+
+	SIZE_T size = ILGetSize(pidl);
+	if (size <= sizeof(USHORT)) return nullptr; // Already root
+
+	PIDLIST_ABSOLUTE parent = ILClone(pidl);
+	if (!parent) return nullptr;
+
+	ILRemoveLastID(parent); // Removes last child node
+	return parent;
+}
+
+
+PIDLIST_ABSOLUTE DeserializePIDL(winrt::Windows::Storage::Streams::IBuffer const& buffer)
+{
+	if (!buffer) return nullptr;
+
+	auto size = buffer.Length();
+	if (size == 0) return nullptr;
+
+	auto data = buffer.data(); // requires C++/WinRT
+	auto pidl = reinterpret_cast<ITEMIDLIST*>(CoTaskMemAlloc(size));
+	if (pidl)
+	{
+		memcpy(pidl, data, size);
+	}
+	return pidl;
+}
+winrt::Windows::Storage::Streams::IBuffer SerializePIDL(PCIDLIST_ABSOLUTE pidl)
+{
+	if (!pidl) return nullptr;
+
+	UINT size = ILGetSize(pidl); // Includes null terminator
+	auto buffer = winrt::Windows::Storage::Streams::Buffer(size);
+	buffer.Length(size);
+
+	memcpy(buffer.data(), pidl, size); // if not using writer
+	return buffer;
+}
+
+
+PIDLIST_ABSOLUTE PidlFromPath(const wchar_t* path)
+{
+	PIDLIST_ABSOLUTE pidl = nullptr;
+	SFGAOF sfgao;
+
+	HRESULT hr = SHParseDisplayName(path, nullptr, &pidl, 0, &sfgao);
+	if (SUCCEEDED(hr))
+		return pidl;
+	return nullptr;
+}
+
+#include <propkey.h>
+void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
+{
+	// Enumerate children
+	CComPtr<IShellFolder> pDesktop;
+	SHGetDesktopFolder(&pDesktop);
+
+	// Bind to the folder
+	CComPtr<IShellFolder> pFolder;
+	pDesktop->BindToObject(root, nullptr, IID_PPV_ARGS(&pFolder));
+	if (!pFolder)
+		pFolder = pDesktop;
+
+	// Enumerate items in the folder
+	CComPtr<IEnumIDList> pEnum;
+	pFolder->EnumObjects(nullptr, SHCONTF_FOLDERS | SHCONTF_NONFOLDERS | SHCONTF_INCLUDEHIDDEN, &pEnum);
+
+	LPITEMIDLIST pidlItem;
+	ULONG fetched = 0;
+
+	while (pEnum->Next(1, &pidlItem, &fetched) == S_OK) {
+		STRRET str;
+		pFolder->GetDisplayNameOf(pidlItem, SHGDN_NORMAL, &str);
+		CHILD_ITEM ci;
+
+		// Is it a folder?
+		CComPtr<IShellFolder> pFolder2;
+		pFolder->BindToObject(pidlItem, nullptr, IID_PPV_ARGS(&pFolder2));
+		if (pFolder2)
+		{
+			CComPtr<IShellFolder2> pFolder22;
+			pFolder22 = pFolder2;
+			if (pFolder22)
+			{
+				// Check if it's a directory
+				VARIANT vtIsDir;
+				if (SUCCEEDED(pFolder22->GetDetailsEx(pidlItem, &PKEY_FileAttributes, &vtIsDir)))
+				{
+					if (vtIsDir.vt == VT_UI4)
+					{
+						bool isDirectory = (vtIsDir.ulVal & FILE_ATTRIBUTE_DIRECTORY) != 0;
+						if (isDirectory)
+							ci.Type = 1;
+					}
+					VariantClear(&vtIsDir);
+				}
+			}
+		}
+
+		wchar_t name[MAX_PATH] = {};
+		StrRetToBufW(&str, pidlItem, name, MAX_PATH);
+
+#pragma warning(disable:4090)
+		ci.pidl.reset(pidlItem);
+		ci.displname = name;
+		r.push_back(ci);
+	}
+
+}
