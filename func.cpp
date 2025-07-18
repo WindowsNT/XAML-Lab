@@ -1162,7 +1162,9 @@ bool IsPlainFile(IShellFolder* parentFolder, ITEMIDLIST* pidlItem)
 	return false;
 }
 
-void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
+
+
+void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r,bool SkipIcon = false)
 {
 	// Enumerate children
 	CComPtr<IShellFolder> pDesktop;
@@ -1240,15 +1242,17 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
 		// Icon to BitmapImage
 		try
 		{
-			auto bi = GetIconFromPath(path);
-			if (bi)
+			if (SkipIcon == 0)
 			{
-				auto ifi = ImageFromIcon(nullptr, bi);
-				if (ifi)
-					ci.icon = ifi;
-				else
+				auto bi = GetIconFromPath(path);
+				if (bi)
 				{
-					MessageBeep(0);
+					auto ifi = ImageFromIcon(nullptr, bi);
+					if (ifi)
+						ci.icon = ifi;
+					else
+					{
+					}
 				}
 			}
 		}
@@ -1265,4 +1269,54 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r)
 		r.push_back(ci);
 	}
 
+}
+
+void GetTheTree(ITEMIDLIST* root, ITEMIDLIST* end, XML3::XMLElement& R,int Deep)
+{
+	// Get shell folders
+	CComPtr<IShellFolder> pDesktop;
+	SHGetDesktopFolder(&pDesktop);
+
+	// Get display name of current root
+	STRRET str;
+	pDesktop->GetDisplayNameOf(root, SHGDN_NORMAL | SHGDN_FORPARSING, &str);
+	wchar_t name[MAX_PATH] = {};
+	StrRetToBufW(&str, root, name, MAX_PATH);
+	R.vv("n").SetWideValue(name);
+
+	// Bind to folder
+	CComPtr<IShellFolder> pFolder;
+	HRESULT hr = pDesktop->BindToObject(root, nullptr, IID_PPV_ARGS(&pFolder));
+	if (FAILED(hr) || !pFolder)
+		pFolder = pDesktop;
+
+	// Enumerate children
+	std::vector<CHILD_ITEM> children;
+	EnumerateChildren(root, children, true);
+
+	for (auto& chi : children)
+	{
+		if (chi.Type != 1) continue; // only folders
+
+		MYPIDL childFull;
+		childFull.reset(ILCombine(root, chi.pidl.get()));
+		if (!childFull)
+			continue;
+
+		// Only descend if child is part of the path to `end`
+		if (ILIsEqual(childFull.get(), end) || ILIsParent(childFull.get(), end, FALSE))
+		{
+			auto& el = R.AddElement("e");
+			el.vv("n").SetWideValue(chi.displname.c_str());
+
+			if (ILIsEqual(childFull.get(), end))
+			{
+				break; // reached target, stop descending
+			}
+
+			// recurse
+			GetTheTree(childFull.get(), end, el,Deep + 1);
+
+		}
+	}
 }

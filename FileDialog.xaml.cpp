@@ -4,10 +4,11 @@
 #include "FileDialog.g.cpp"
 #endif
 
-
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
-using namespace Microsoft::UI::Xaml::Controls;
+using namespace winrt::Microsoft::UI::Xaml::Controls;
+
+
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,8 +48,8 @@ namespace winrt::VisualWinUI3::implementation
 
 	void FileDialog::BIClicked(IInspectable param1, IInspectable param2)
 	{
-		auto bcb = param1.as<BreadcrumbBar>();
-		auto p2 = param2.try_as< BreadcrumbBarItemClickedEventArgs>();
+		auto bcb = param1.as<winrt::Microsoft::UI::Xaml::Controls::BreadcrumbBar>();
+		auto p2 = param2.try_as<winrt::Microsoft::UI::Xaml::Controls::BreadcrumbBarItemClickedEventArgs>();
 		if (!p2)
 			return;
 		auto it = p2.Item().try_as<winrt::VisualWinUI3::Item>();
@@ -58,6 +59,7 @@ namespace winrt::VisualWinUI3::implementation
 		CurrentPath(it.II());
 		m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"BreadcrumbBarItems"});
 		m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"FileItemsX" });
+		m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"TreeItems" });
 	}
 
 	IObservableVector<winrt::VisualWinUI3::Item> FileDialog::BreadcrumbBarItems()
@@ -103,9 +105,20 @@ namespace winrt::VisualWinUI3::implementation
 
 		return items;
 	}
+
+	XML3::XMLElement tree_root;
 	IObservableVector<winrt::VisualWinUI3::FileSystemItem> FileDialog::TreeItems()
 	{
 		auto items = single_threaded_observable_vector<winrt::VisualWinUI3::FileSystemItem>();
+		void GetTheTree(ITEMIDLIST * root, ITEMIDLIST * end, XML3::XMLElement & tree_root,int Deep);
+		tree_root = {};
+		GetTheTree(0,_pidl.get(),tree_root,0);
+#ifdef _DEBUG
+		auto ser = tree_root.Serialize();
+		ser;
+#endif
+		winrt::VisualWinUI3::FileSystemItem rootItem((long long)&tree_root, 0);
+		items.Append(rootItem);
 		return items;
 	}
 
@@ -165,6 +178,7 @@ namespace winrt::VisualWinUI3::implementation
 			CurrentPath(it.II());
 			m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"BreadcrumbBarItems" });
 			m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"FileItemsX" });
+			m_propertyChanged(*this, Microsoft::UI::Xaml::Data::PropertyChangedEventArgs{ L"TreeItems" });
 		}
 		else
 		{
@@ -182,8 +196,8 @@ namespace winrt::VisualWinUI3::implementation
 
 
 		std::vector<CHILD_ITEM> ci;
-		void EnumerateChildren(ITEMIDLIST * root, std::vector<CHILD_ITEM>&r);
-		EnumerateChildren(_pidl.get(), ci);
+		void EnumerateChildren(ITEMIDLIST * root, std::vector<CHILD_ITEM>&r,bool);
+		EnumerateChildren(_pidl.get(), ci,false);
 
 		std::sort(ci.begin(), ci.end(), [](CHILD_ITEM& left, CHILD_ITEM& right) -> bool
 			{
