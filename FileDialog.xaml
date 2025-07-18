@@ -68,7 +68,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TreeView MinWidth="100" ItemsSource="{x:Bind TreeItems, Mode=OneWay}" Margin="10,10,10,10" Name="TreeBrowser">
+            <TreeView ItemsSource="{x:Bind TreeItems, Mode=OneWay}" Margin="10,10,10,10" Name="TreeBrowser" Visibility="Collapsed">
                 <TreeView.ItemTemplate>
                     <DataTemplate x:DataType="local:FileSystemItem">
                         <TreeViewItem ItemsSource="{x:Bind Children,Mode=OneWay}" IsExpanded="True">

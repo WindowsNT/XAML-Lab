@@ -1330,7 +1330,7 @@ namespace winrt::VisualWinUI3::implementation
 		j.ExtendsContentIntoTitleBar(true);
 
 		PIDLIST_ABSOLUTE pidlDesktop = nullptr;
-#ifdef _DEBUG
+#ifdef _DEBUG3
 		pidlDesktop = PidlFromPath(L"r:\\iep");
 #else
 		SHGetKnownFolderIDList(FOLDERID_Desktop, 0, nullptr, &pidlDesktop);

@@ -149,6 +149,13 @@ public:
         other.m_pidl = nullptr;
     }
 
+    // operator = 
+#pragma warning(disable:4090)
+    MYPIDL& operator=(ITEMIDLIST* pidl) noexcept {
+        reset(pidl);
+        return *this;
+	}
+
     // Copy assignment
     MYPIDL& operator=(const MYPIDL& other) {
         if (this != &other) {
@@ -212,7 +219,9 @@ private:
 
 struct CHILD_ITEM
 {
+    CComPtr<IShellFolder> Parent;
     MYPIDL pidl;
+    MYPIDL abspidl;
     int Type = 0; // 0 file 1 folder etc
     std::wstring displname;
     unsigned long long sz = 0;

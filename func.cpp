@@ -1264,7 +1264,9 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r,bool SkipIcon
 	
 
 #pragma warning(disable:4090)
+		ci.Parent = pFolder;
 		ci.pidl.reset(pidlItem);
+		ci.abspidl.reset(ILCombine(root, pidlItem));
 		ci.displname = name;
 		r.push_back(ci);
 	}
@@ -1273,13 +1275,16 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r,bool SkipIcon
 
 void GetTheTree(ITEMIDLIST* root, ITEMIDLIST* end, XML3::XMLElement& R,int Deep)
 {
+	if (1)
+		return;
+
 	// Get shell folders
 	CComPtr<IShellFolder> pDesktop;
 	SHGetDesktopFolder(&pDesktop);
 
 	// Get display name of current root
 	STRRET str;
-	pDesktop->GetDisplayNameOf(root, SHGDN_NORMAL | SHGDN_FORPARSING, &str);
+	pDesktop->GetDisplayNameOf(root, SHGDN_NORMAL, &str);
 	wchar_t name[MAX_PATH] = {};
 	StrRetToBufW(&str, root, name, MAX_PATH);
 	R.vv("n").SetWideValue(name);
