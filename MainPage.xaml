@@ -277,7 +277,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
-            <ListView Grid.Row="0" Grid.Column="0" x:Name="xList0" ItemsSource="{x:Bind Panels,Mode=OneWay}" SelectionChanged="ListViewPick1"  Margin="5" Visibility="{x:Bind ViewElements,Mode=OneWay}" IsEnabled="{x:Bind CanAddPanel,Mode=OneWay}">
+            <ListView Grid.Row="0" Grid.Column="0" x:Name="xList0" ItemsSource="{x:Bind Panels,Mode=OneWay}" SelectionChanged="ListViewPick1"  Margin="5" Visibility="{x:Bind ViewElements,Mode=OneWay}" IsEnabled="{x:Bind CanAddPanel,Mode=OneWay}" >
                 <ListView.Header>
                     <TextBlock Text="{x:Bind txt(55);}"
                    HorizontalAlignment="Center"
