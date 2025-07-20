@@ -79,7 +79,7 @@
                     </DataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            <ListView MinWidth="100" ItemsSource="{x:Bind FileItemsX, Mode=OneWay}" Grid.Column="1" Name="ListFiles" HorizontalAlignment="Left" VerticalAlignment="Top" IsDoubleTapEnabled="True" DoubleTapped="ListDT" Tapped="ListT">
+            <ListView MinWidth="100" ItemsSource="{x:Bind FileItemsX, Mode=OneWay}" Grid.Column="1" Name="ListFiles" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsDoubleTapEnabled="True" DoubleTapped="ListDT" Tapped="ListT" >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Item">
                         <Grid>

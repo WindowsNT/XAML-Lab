@@ -9,6 +9,7 @@ using namespace Microsoft::UI::Xaml;
 using namespace winrt::Microsoft::UI::Xaml::Controls;
 
 
+void RemoveDuplicates(std::vector<CHILD_ITEM>& ch);
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -199,6 +200,9 @@ namespace winrt::VisualWinUI3::implementation
 		void EnumerateChildren(ITEMIDLIST * root, std::vector<CHILD_ITEM>&r,bool);
 		EnumerateChildren(_pidl.get(), ci,false);
 
+		// Remove duplicates
+		RemoveDuplicates(ci);
+
 		std::sort(ci.begin(), ci.end(), [](CHILD_ITEM& left, CHILD_ITEM& right) -> bool
 			{
 				if (left.Type == 1 && right.Type == 0)
@@ -212,6 +216,7 @@ namespace winrt::VisualWinUI3::implementation
 			Item itx;
 			itx.Boolean0(c.Type == 1);
 			itx.Name1(c.displname);
+			itx.Name2(c.displname);
 			if (c.pidl.get())
 			{
 				// Absolute path

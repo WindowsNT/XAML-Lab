@@ -1273,6 +1273,24 @@ void EnumerateChildren(ITEMIDLIST* root,std::vector<CHILD_ITEM>& r,bool SkipIcon
 
 }
 
+void RemoveDuplicates(std::vector<CHILD_ITEM>& ch)
+{
+	std::set<std::wstring> uniqueNames;
+	auto it = ch.begin();
+	while (it != ch.end())
+	{
+		if (uniqueNames.find(it->displname) != uniqueNames.end())
+		{
+			it = ch.erase(it); // Remove duplicate
+		}
+		else
+		{
+			uniqueNames.insert(it->displname);
+			++it; // Move to next item
+		}
+	}
+}
+
 void GetTheTree(ITEMIDLIST* root, ITEMIDLIST* end, XML3::XMLElement& R,int Deep)
 {
 	if (1)
